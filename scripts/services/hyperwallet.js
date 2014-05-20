@@ -13,6 +13,11 @@ angular.module('2ViVe')
           transformResponse: camelize
         }).then(handleResponse);
       },
+      details: function() {
+        return $http.get('/api/v2/hyperwallets/accounts/details', {
+          transformResponse: camelize
+        }).then(handleResponse);
+      },
       create: function(hyperwallet) {
         return $http.post('/api/v2/hyperwallets/accounts', hyperwallet, {
           transformRequest: function(data) {
