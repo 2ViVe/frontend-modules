@@ -5,9 +5,7 @@
   "authors": [
     "Liu Yang <zation1@gmail.com>"
   ],
-  "moduleType": [
-    "globals"
-  ],
+  "main": "scripts/main.js",
   "private": true,
   "ignore": [
     "**/.*",
