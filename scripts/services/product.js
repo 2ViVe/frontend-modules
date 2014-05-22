@@ -44,8 +44,8 @@ angular.module('2ViVe')
         }
       };
     }])
-  .factory('Product', ['$http', 'User', 'CamelCaseLize', '$q', 'DEFAULT_ROLE_CODE',
-    function($http, User, CamelCaseLize, $q, DEFAULT_ROLE_CODE) {
+  .factory('Product', ['$http', 'User', 'CamelCaseLize', '$q', 'DEFAULT_ROLE_CODE', '$sce',
+    function($http, User, CamelCaseLize, $q, DEFAULT_ROLE_CODE, $sce) {
       var ATTRIBUTE_KEY = {
         'Color': 'colors',
         'Size': 'sizes'
@@ -72,10 +72,11 @@ angular.module('2ViVe')
             }
           }).then(function(response) {
             product.data = response.data.response;
+            product.data.description = $sce.trustAsHtml(product.data.description);
             angular.forEach(product.data.variants, function(variant) {
               angular.forEach(variant.options, function(option) {
-                if (product[ATTRIBUTE_KEY[option.type]].indexOf(option.name) < 0) {
-                  product[ATTRIBUTE_KEY[option.type]].push(option.name);
+                if (product[ATTRIBUTE_KEY[option.type]].indexOf(option) < 0) {
+                  product[ATTRIBUTE_KEY[option.type]].push(option);
                 }
               });
             });
@@ -92,7 +93,7 @@ angular.module('2ViVe')
         angular.forEach(product.data.variants, function(variant) {
           var isThisVariant = true;
           angular.forEach(variant.options, function(option) {
-            if (options[option.type] !== option.name) {
+            if (options[option.type].name !== option.name) {
               isThisVariant = false;
             }
           });
