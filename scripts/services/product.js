@@ -81,8 +81,16 @@ angular.module('2ViVe')
             product.data.description = $sce.trustAsHtml(product.data.description);
             angular.forEach(product.data.variants, function(variant) {
               angular.forEach(variant.options, function(option) {
-                if (product[ATTRIBUTE_KEY[option.type]].indexOf(option) < 0) {
-                  product[ATTRIBUTE_KEY[option.type]].push(option);
+                var currentOptions = product[ATTRIBUTE_KEY[option.type]];
+                var notAdded = true;
+                angular.forEach(currentOptions, function(currentOption) {
+                  if (currentOption.name === option.name) {
+                    notAdded = false;
+                    return;
+                  }
+                });
+                if (notAdded) {
+                  currentOptions.push(option);
                 }
               });
             });
