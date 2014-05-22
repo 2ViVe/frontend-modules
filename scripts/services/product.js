@@ -72,6 +72,12 @@ angular.module('2ViVe')
             }
           }).then(function(response) {
             product.data = response.data.response;
+
+            if (product.data.price === 0 || isNaN(product.data.price)) {
+              deferred.reject(product);
+              return;
+            }
+
             product.data.description = $sce.trustAsHtml(product.data.description);
             angular.forEach(product.data.variants, function(variant) {
               angular.forEach(variant.options, function(option) {
@@ -80,7 +86,10 @@ angular.module('2ViVe')
                 }
               });
             });
+
             deferred.resolve(product);
+          }).catch(function(data) {
+            deferred.reject(data);
           });
         });
 
