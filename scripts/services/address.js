@@ -11,7 +11,10 @@ angular.module('2ViVe')
     function processFailures(failures) {
       var result = {};
       angular.forEach(failures, function (failure) {
-        result[failure.code] = failure.message;
+        result[failure.code] = {
+          message: failure.message,
+          field: failure.field
+        };
       });
       return result;
     }
