@@ -1,0 +1,182 @@
+<div class="row title">
+  <h6 class="small-3 text-right columns">
+    HOME ADDRESS
+  </h6>
+</div>
+<div class="row">
+  <div class="small-3 columns">
+    <label class="right inline required" for="home-first-name">First Name</label>
+  </div>
+  <div class="small-5 end columns">
+    <input type="text" required id="home-first-name" name="home-first-name" ng-model="homeAddress['first-name']"/>
+    <small ng-show="submitted && form['home-first-name'].$error.required" class="error">
+      This field is required.
+    </small>
+    <small ng-show="submitted && $homeAddressErrors.InvalidFirstName" class="error">
+      {{$homeAddressErrors.InvalidFirstName.message}}
+    </small>
+  </div>
+</div>
+<div class="row">
+  <div class="small-3 columns">
+    <label class="right inline required" for="home-last-name">Last Name</label>
+  </div>
+  <div class="small-5 end columns">
+    <input type="text" required id="home-last-name" name="home-last-name" ng-model="homeAddress['last-name']"/>
+    <small ng-show="submitted && form['home-last-name'].$error.required" class="error">
+      This field is required.
+    </small>
+    <small ng-show="submitted && $homeAddressErrors.InvalidLastName" class="error">
+      {{$homeAddressErrors.InvalidLastName.message}}
+    </small>
+  </div>
+</div>
+<div class="row">
+  <div class="small-3 columns">
+    <label class="right inline" for="co-first-name">Coapplicant First Name</label>
+  </div>
+  <div class="small-5 end columns">
+    <input type="text" id="co-first-name" name="co-first-name" ng-model="homeAddress.coFirstName"/>
+  </div>
+</div>
+<div class="row">
+  <div class="small-3 columns">
+    <label class="right inline" for="co-last-name">Coapplicant Last Name</label>
+  </div>
+  <div class="small-5 end columns">
+    <input type="text" id="co-last-name" name="co-last-name" ng-model="homeAddress.coLastName"/>
+  </div>
+</div>
+<div class="row">
+  <div class="small-3 columns">
+    <label class="right inline required" for="home-street">Address</label>
+  </div>
+  <div class="small-5 end columns">
+    <input required type="text" id="home-street" name="home-street" ng-model="homeAddress.street"/>
+    <small ng-show="submitted && form['home-street'].$error.required" class="error">
+      This field is required.
+    </small>
+    <small ng-show="submitted && $homeAddressErrors.InvalidStreet" class="error">
+      {{$homeAddressErrors.InvalidStreet.message}}
+    </small>
+  </div>
+</div>
+<div class="row">
+  <div class="small-3 columns">
+    <label class="right inline" for="home-street-contd">Address (contd)</label>
+  </div>
+  <div class="small-5 end columns">
+    <input type="text" id="home-street-contd" name="home-street-contd" ng-model="homeAddress['street-contd']"/>
+  </div>
+  <small ng-show="submitted && $homeAddressErrors.InvalidStreetContd" class="error">
+    {{$homeAddressErrors.InvalidStreetContd.message}}
+  </small>
+</div>
+<div class="row">
+  <div class="small-3 columns">
+    <label class="right inline required" for="home-city">City</label>
+  </div>
+  <div class="small-5 end columns">
+    <input required type="text" id="home-city" name="home-city" ng-model="homeAddress.city"/>
+    <small ng-show="submitted && form['home-city'].$error.required" class="error">
+      This field is required.
+    </small>
+    <small ng-show="submitted && $homeAddressErrors.InvalidCity" class="error">
+      {{$homeAddressErrors.InvalidCity.message}}
+    </small>
+  </div>
+</div>
+<div data-countries-and-states>
+  <div class="row" ng-show="homeAddress.country.states.length > 0">
+    <div class="small-3 columns">
+      <label class="right inline required" for="home-state-id">County</label>
+    </div>
+    <div class="small-5 end columns">
+      <select id="home-state-id"
+              name="home-state-id"
+              ng-model="homeAddress.state"
+              ng-required="homeAddress.country.states.length > 0"
+              ng-options="state.name for state in homeAddress.country.states | orderBy:'name'">
+      </select>
+      <small ng-show="submitted && form['home-state-id'].$error.required" class="error">
+        This field is required.
+      </small>
+      <small ng-show="submitted && $homeAddressErrors.InvalidState" class="error">
+        {{$homeAddressErrors.InvalidState.message}}
+      </small>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-3 columns">
+      <label class="right inline required" for="home-country-id">Country</label>
+    </div>
+    <div class="small-5 end columns">
+      <select required id="home-country-id"
+              name="home-country-id"
+              ng-model="homeAddress.country"
+              ng-options="country.name for country in countries | orderBy:'name'">
+      </select>
+      <small ng-show="submitted && form['home-country-id'].$error.required" class="error">
+        This field is required.
+      </small>
+      <small ng-show="submitted && $homeAddressErrors.InvalidCountry" class="error">
+        {{$homeAddressErrors.InvalidCountry.message}}
+      </small>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="small-3 columns">
+    <label class="right inline required" for="home-zip">Post Code</label>
+  </div>
+  <div class="small-5 end columns">
+    <input required type="text" id="home-zip" name="home-zip" ng-model="homeAddress.zip"/>
+    <small ng-show="submitted && form['home-zip'].$error.required" class="error">
+      This field is required.
+    </small>
+    <small ng-show="submitted && $homeAddressErrors.InvalidZip" class="error">
+      {{$homeAddressErrors.InvalidZip.message}}
+    </small>
+  </div>
+</div>
+<div class="row">
+  <div class="small-3 columns">
+    <label class="right inline required" for="home-phone">Phone</label>
+  </div>
+  <div class="small-5 end columns">
+    <input required type="text" id="home-phone" name="home-phone" ng-model="homeAddress.phone"/>
+    <small ng-show="submitted && form['home-phone'].$error.required" class="error">
+      This field is required.
+    </small>
+    <small ng-show="submitted && $homeAddressErrors.InvalidPhone" class="error">
+      {{$homeAddressErrors.InvalidPhone.message}}
+    </small>
+  </div>
+</div>
+<div class="row">
+  <div class="small-3 columns">
+    <label class="right inline" for="home-mobile-phone">Mobile</label>
+  </div>
+  <div class="small-5 end columns">
+    <input type="text" id="home-mobile-phone" name="home-mobile-phone" ng-model="homeAddress['mobile-phone']"/>
+    <small ng-show="submitted && $homeAddressErrors.InvalidMobilePhone" class="error">
+      {{$homeAddressErrors.InvalidMobilePhone.message}}
+    </small>
+  </div>
+</div>
+<div class="row">
+  <div class="small-3 columns">
+    <label class="right inline" for="home-work-number">Work Number</label>
+  </div>
+  <div class="small-5 end columns">
+    <input type="text" id="home-work-number" name="home-work-number" ng-model="homeAddress['work-number']"/>
+  </div>
+</div>
+<div class="row">
+  <div class="small-3 columns">
+    <label class="right inline" for="home-fax-number">Fax Number</label>
+  </div>
+  <div class="small-5 end columns">
+    <input type="text" id="home-fax-number" name="home-fax-number" ng-model="homeAddress['fax-number']"/>
+  </div>
+</div>

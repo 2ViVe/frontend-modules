@@ -1,0 +1,150 @@
+<div class="row title">
+  <h6 class="small-3 text-right columns">
+    SHIPPING ADDRESS
+  </h6>
+
+  <div class="columns small-3 end" ng-show="homeAddressSource !== undefined">
+    <label for="shipping-is-use-home-address">
+      <input type="checkbox" id="shipping-is-use-home-address" ng-change="useHomeAddress()"
+             ng-model="shippingIsUseHomeAddress"/>
+      Use home address
+    </label>
+  </div>
+</div>
+<div class="row">
+  <div class="small-3 columns">
+    <label class="right inline required" for="shipping-first-name">First Name</label>
+  </div>
+  <div class="small-5 end columns">
+    <input required type="text" id="shipping-first-name" name="shipping-first-name"
+           ng-model="shippingAddress['first-name']"/>
+    <small ng-show="submitted && form['shipping-first-name'].$error.required" class="error">
+      This field is required.
+    </small>
+    <small ng-show="submitted && $shippingAddressErrors.InvalidFirstName" class="error">
+      {{$shippingAddressErrors.InvalidFirstName.message}}
+    </small>
+  </div>
+</div>
+<div class="row">
+  <div class="small-3 columns">
+    <label class="right inline required" for="shipping-last-name">Last Name</label>
+  </div>
+  <div class="small-5 end columns">
+    <input required type="text" id="shipping-last-name" name="shipping-last-name"
+           ng-model="shippingAddress['last-name']"/>
+    <small ng-show="submitted && form['shipping-last-name'].$error.required" class="error">
+      This field is required.
+    </small>
+    <small ng-show="submitted && $shippingAddressErrors.InvalidLastName" class="error">
+      {{$shippingAddressErrors.InvalidLastName.message}}
+    </small>
+  </div>
+</div>
+<div class="row">
+  <div class="small-3 columns">
+    <label class="right inline required" for="shipping-street">Address</label>
+  </div>
+  <div class="small-5 end columns">
+    <input required type="text" id="shipping-street" name="shipping-street" ng-model="shippingAddress.street"/>
+    <small ng-show="submitted && form['shipping-street'].$error.required" class="error">
+      This field is required.
+    </small>
+    <small ng-show="submitted && $shippingAddressErrors.InvalidStreet" class="error">
+      {{$shippingAddressErrors.InvalidStreet.message}}
+    </small>
+  </div>
+</div>
+<div class="row">
+  <div class="small-3 columns">
+    <label class="right inline" for="shipping-street-contd">Address (contd)</label>
+  </div>
+  <div class="small-5 end columns">
+    <input type="text" id="shipping-street-contd" name="shipping-street-contd"
+           ng-model="shippingAddress['street-contd']"/>
+    <small ng-show="submitted && $shippingAddressErrors.InvalidStreetContd" class="error">
+      {{$shippingAddressErrors.InvalidStreetContd.message}}
+    </small>
+  </div>
+</div>
+<div class="row">
+  <div class="small-3 columns">
+    <label class="right inline required" for="shipping-city">City</label>
+  </div>
+  <div class="small-5 end columns">
+    <input required type="text" id="shipping-city" name="shipping-city" ng-model="shippingAddress.city"/>
+    <small ng-show="submitted && form['shipping-city'].$error.required" class="error">
+      This field is required.
+    </small>
+    <small ng-show="submitted && $shippingAddressErrors.InvalidCity" class="error">
+      {{$shippingAddressErrors.InvalidCity.message}}
+    </small>
+  </div>
+</div>
+<div data-countries-and-states>
+  <div class="row" ng-show="shippingAddress.country.states.length > 0">
+    <div class="small-3 columns">
+      <label class="right inline required" for="shipping-state-id">County</label>
+    </div>
+    <div class="small-5 end columns">
+      <select id="shipping-state-id"
+              name="shipping-state-id"
+              ng-model="shippingAddress.state"
+              ng-required="shippingAddress.country.states.length > 0"
+              ng-options="state.name for state in shippingAddress.country.states | orderBy:'name'">
+      </select>
+      <small ng-show="submitted && form['shipping-state-id'].$error.required" class="error">
+        This field is required.
+      </small>
+      <small ng-show="submitted && $shippingAddressErrors.InvalidState" class="error">
+        {{$shippingAddressErrors.InvalidState.message}}
+      </small>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-3 columns">
+      <label class="right inline required" for="shipping-country-id">Country</label>
+    </div>
+    <div class="small-5 end columns">
+      <select required id="shipping-country-id"
+              name="shipping-country-id"
+              ng-model="shippingAddress.country"
+              ng-options="country.name for country in countries | orderBy:'name'">
+      </select>
+      <small ng-show="submitted && form['shipping-country-id'].$error.required" class="error">
+        This field is required.
+      </small>
+      <small ng-show="submitted && $shippingAddressErrors.InvalidCountry" class="error">
+        {{$shippingAddressErrors.InvalidCountry.message}}
+      </small>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="small-3 columns">
+    <label class="right inline required" for="shipping-zip">Post Code</label>
+  </div>
+  <div class="small-5 end columns">
+    <input required type="text" id="shipping-zip" name="shipping-zip" ng-model="shippingAddress.zip"/>
+    <small ng-show="submitted && form['shipping-zip'].$error.required" class="error">
+      This field is required.
+    </small>
+    <small ng-show="submitted && $shippingAddressErrors.InvalidZip" class="error">
+      {{$shippingAddressErrors.InvalidZip.message}}
+    </small>
+  </div>
+</div>
+<div class="row">
+  <div class="small-3 columns">
+    <label class="right inline required" for="shipping-phone">Phone</label>
+  </div>
+  <div class="small-5 end columns">
+    <input required type="text" id="shipping-phone" name="shipping-phone" ng-model="shippingAddress.phone"/>
+    <small ng-show="submitted && form['shipping-phone'].$error.required" class="error">
+      This field is required.
+    </small>
+    <small ng-show="submitted && $shippingAddressErrors.InvalidPhone" class="error">
+      {{$shippingAddressErrors.InvalidPhone.message}}
+    </small>
+  </div>
+</div>

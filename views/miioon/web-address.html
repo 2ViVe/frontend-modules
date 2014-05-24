@@ -1,0 +1,82 @@
+<div class="row title">
+  <h6 class="small-3 text-right columns">
+    WEB ADDRESS
+  </h6>
+
+  <div class="columns small-3 end" ng-show="homeAddressSource !== undefined">
+    <label for="web-is-use-home-address">
+      <input type="checkbox" id="web-is-use-home-address" ng-change="useHomeAddress()"
+        ng-model="webIsUseHomeAddress"/>
+      Use home address
+    </label>
+  </div>
+</div>
+<div class="row">
+  <div class="small-3 columns">
+    <label class="right inline required" for="web-first-name">First Name</label>
+  </div>
+  <div class="small-5 end columns">
+    <input required type="text" id="web-first-name" name="web-first-name" ng-model="webAddress['first-name']"/>
+    <small ng-show="submitted && form['web-first-name'].$error.required" class="error">
+      This field is required.
+    </small>
+    <small ng-show="submitted && $webAddressErrors.InvalidFirstName" class="error">
+      {{ $webAddressErrors.InvalidFirstName.message }}
+    </small>
+  </div>
+</div>
+<div class="row">
+  <div class="small-3 columns">
+    <label class="right inline required" for="web-last-name">Last Name</label>
+  </div>
+  <div class="small-5 end columns">
+    <input required type="text" id="web-last-name" name="web-last-name" ng-model="webAddress['last-name']"/>
+    <small ng-show="submitted && form['web-last-name'].$error.required" class="error">
+      This field is required.
+    </small>
+    <small ng-show="submitted && $webAddressErrors.InvalidLastName" class="error">
+      {{ $webAddressErrors.InvalidLastName.message }}
+    </small>
+  </div>
+</div>
+<div class="row">
+  <div class="small-3 columns">
+    <label class="right inline required" for="web-phone">Phone</label>
+  </div>
+  <div class="small-5 end columns">
+    <input required type="text" id="web-phone" name="web-phone" ng-model="webAddress.phone"/>
+    <small ng-show="submitted && form['web-phone'].$error.required" class="error">
+      This field is required.
+    </small>
+    <small ng-show="submitted && $webAddressErrors.InvalidPhone" class="error">
+      {{ $webAddressErrors.InvalidPhone.message }}
+    </small>
+  </div>
+</div>
+<div class="row">
+  <div class="small-3 columns">
+    <label class="right inline" for="web-mobile-phone">Mobile</label>
+  </div>
+  <div class="small-5 end columns">
+    <input type="text" id="web-mobile-phone" name="web-mobile-phone" ng-model="webAddress['mobile-phone']"/>
+    <small ng-show="submitted && $webAddressErrors.InvalidMobilePhone" class="error">
+      {{ $webAddressErrors.InvalidMobilePhone.message }}
+    </small>
+  </div>
+</div>
+<div class="row">
+  <div class="small-3 columns">
+    <label class="right inline" for="web-email">Email</label>
+  </div>
+  <div class="small-5 end columns">
+    <input type="text" id="web-email" name="web-email" ng-model="webAddress.email"/>
+  </div>
+</div>
+<div class="row">
+  <div class="small-3 columns">
+    <label class="right inline" for="web-fax-number">Fax Number</label>
+  </div>
+  <div class="small-5 end columns">
+    <input type="text" id="web-fax-number" name="web-fax-number" ng-model="webAddress['fax-number']"/>
+  </div>
+</div>
