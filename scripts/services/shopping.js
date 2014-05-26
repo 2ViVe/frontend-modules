@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('2ViVe')
-  .factory('Shopping', ['$http', 'LocalStorage', 'User', '$location', 'Variant', '$q',
-    function($http, LocalStorage, User, $location, Variant, $q) {
+  .factory('Shopping', ['$http', 'LocalStorage', 'User', '$location', 'Variant', '$q', 'DEFAULT_ROLE_CODE',
+    function($http, LocalStorage, User, $location, Variant, $q, DEFAULT_ROLE_CODE) {
       var Shopping = {
         mergeItems: function() {
           return Shopping.addItems(Shopping.items);
@@ -49,7 +49,8 @@ angular.module('2ViVe')
             {
               'variant-id': variant.id,
               'quantity': quantity,
-              'catalog-code': catalogCode
+              'catalog-code': catalogCode,
+              'role-code': User.isLogin ? null : DEFAULT_ROLE_CODE
             }
           ]).success(function(data) {
             Shopping.items = data.response;
