@@ -48,37 +48,40 @@ angular.module('2ViVe')
         needCache = false,
         proto;
 
-    function Address(data) {
 
-      this.home = {};
-      this.billing = {};
-      this.website = {};
-      this.shipping = {};
-
-      this.extend(data);
+    function Address(type) {
+      this.type = type;
     }
 
-    proto = Address.prototype;
 
-    proto.extend = function(address) {
-      var self = this;
-      angular.forEach(['home', 'billing', 'shipping', 'website'], function(type) {
+    function mergeAddress(address) {
+      address.countryId = address.country.id;
+      address.stateId = address.state.id;
 
-        self[type].update = function() {
-          return self.update(type, self[type]);
-        };
+      delete address.country;
+      delete address.state;
+    }
 
-        if (!address[type]) {
-          return;
-        }
-        angular.extend(self[type], address[type]);
-      });
-
-      return this;
+    Address.prototype.toJSON = function() {
+      var addr;
+      if (type === 'web') {
+        return angular.toJSON({
+          firstName: this.firstName,
+          lastName: this.lastName,
+          email: this.email,
+          phone: this.phone
+        });
+      }
+      else {
+        addr = angular.copy(this);
+        mergeAddress(addr);
+        return angular.toJSON(addr);
+      }
     };
 
-    proto.validate = function(type, data) {
+    Address.prototype.validate = function() {
       var deferred = $q.defer();
+      var type = this.type;
 
       function validateHandler(response) {
         var failures = response.data.response.failures;
@@ -94,13 +97,76 @@ angular.module('2ViVe')
       }
 
       $http
-        .post(API_URL + '/' + type + '/validate', data, {
+        .post(API_URL + '/' + type + '/validate', this, {
           transformRequest: function(data)  { return angular.toJson(dashlize(data)); },
           transformResponse: camelCaselize
         })
         .then(validateHandler);
 
       return deferred.promise;
+    };
+
+    Address.prototype.update = function() {
+      var self = this;
+
+      return self.validate()
+        .then(function() {
+          return $http
+            .post(API_URL + '/' + type, data, {
+              transformRequest: function(data)  { return angular.toJson(dashlize(data)); },
+              transformResponse: camelCaselize
+            });
+        })
+        .then(function(resp) {
+          var data = resp.data.response;
+          angular.extend(self[type], data);
+          return data;
+        });
+    };
+
+    function AddressContainer() {
+      this.types = [];
+    }
+
+
+    proto = AddressContainer.prototype;
+
+    proto.addType = function(type) {
+      this.types.push(type);
+      this[type] = new Address(type);
+      return this;
+    };
+
+    proto.extend = function(address) {
+      var self = this;
+      var addressTypes = ['home', 'billing', 'shipping', 'website'];
+      angular.forEach(addressTypes, function(type) {
+
+        if (!self[type] && address[type]) {
+          self.addType(type);
+        }
+
+        if (!address[type]) {
+          return;
+        }
+
+        angular.extend(self[type], address[type]);
+      });
+
+      return this;
+    };
+
+    proto.validate = function() {
+      var self = this;
+      return $q
+                .all(this.types.map(function(type) {
+                  return self[type].validate();
+                }))
+                .then(function(results) {
+                  return results.every(function(result) {
+                    return result;
+                  });
+                });
     };
 
     function failuresToObject(failures) {
@@ -136,7 +202,7 @@ angular.module('2ViVe')
         cache: needCache
       }).then(function(resp) {
         needCache = true;
-        address = address ? address.extend(resp.data.response) : new Address(resp.data.response);
+        address = new AddressContainer(resp.data.response);
         return address;
       });
     }
@@ -156,6 +222,8 @@ angular.module('2ViVe')
       validateBillingAddress: function (billingAddress) {
         return $http.post('/api/v2/addresses/billing/validate', billingAddress);
       },
+      Address: Address,
+      AddressContainer: AddressContainer,
       fetch: fetchAddress,
       validateShippingAddressNew: validateAddressWithUrl(SHIPPING_ADDRESS_VALIDATE_URL),
       validateBillingAddressNew: validateAddressWithUrl(BILLING_ADDRESS_VALIDATE_URL),
