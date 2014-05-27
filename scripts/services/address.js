@@ -178,24 +178,6 @@ angular.module('2ViVe')
       return camelCaselize(result);
     }
 
-    proto.update = function(type, data) {
-      var self = this;
-
-      return self.validate(type, data)
-        .then(function() {
-          return $http
-            .post(API_URL + '/' + type, data, {
-              transformRequest: function(data)  { return angular.toJson(dashlize(data)); },
-              transformResponse: camelCaselize
-            });
-        })
-        .then(function(resp) {
-          var data = resp.data.response;
-          angular.extend(self[type], data);
-          return data;
-        });
-    };
-
     function fetchAddress() {
       return $http.get(API_URL, {
         transformResponse: camelCaselize,
