@@ -95,15 +95,19 @@ angular.module('2ViVe')
                   deferred.resolve(Shopping);
                 });
             } else if (LocalStorage.isVisitorIdSaved()) {
-              $http.get('/api/v2/shopping-carts/visitors/' + LocalStorage.getVisitorId())
-                .then(function(response) {
+              $http.get('/api/v2/shopping-carts/visitors/' + LocalStorage.getVisitorId(), {
+                params: {
+                  'role-code': DEFAULT_ROLE_CODE
+                }
+              }).then(function(response) {
                   Shopping.items = response.data.response['line-items'];
                   updateItemsWithVariantsData();
                   deferred.resolve(Shopping);
                 });
             } else {
               $http.post('/api/v2/shopping-carts/visitors', {
-                'id': LocalStorage.createVisitorId()
+                'id': LocalStorage.createVisitorId(),
+                'role-code': DEFAULT_ROLE_CODE
               }).then(function(response) {
                 Shopping.items = response.data.response['line-items'];
                 updateItemsWithVariantsData();
