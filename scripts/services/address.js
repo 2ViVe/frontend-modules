@@ -3,45 +3,6 @@
 angular.module('2ViVe')
   .factory('Address', ['$http', '$q', 'CamelCaseLize', 'Dashlize', function ($http, $q, camelCaselize, dashlize) {
 
-    var SHIPPING_ADDRESS_VALIDATE_URL = '/api/v2/addresses/shipping/validate',
-        BILLING_ADDRESS_VALIDATE_URL = '/api/v2/addresses/billing/validate',
-        WEB_ADDRESS_VALIDATE_URL = '/api/v2/addresses/website/validate',
-        HOME_ADDRESS_VALIDATE_URL = '/api/v2/addresses/home/validate';
-
-    function processFailures(failures) {
-      var result = {};
-      angular.forEach(failures, function (failure) {
-        result[failure.code] = {
-          message : failure.message,
-          field: failure.field
-        };
-      });
-      return result;
-    }
-
-    function validateAddressWithUrl(url) {
-      function validateAddress(address) {
-
-        var deferred = $q.defer(),
-            promise = deferred.promise;
-        $http
-          .post(url, address)
-          .success(function (data) {
-            (data.response.failures.length ? deferred.reject : deferred.resolve)(
-              processFailures(data.response.failures)
-            );
-          })
-          .error(function (data) {
-            deferred.reject(data);
-          });
-
-        return promise;
-      }
-
-      return validateAddress;
-    }
-
-
     var API_URL = '/api/v2/addresses';
 
     var address,
@@ -50,7 +11,9 @@ angular.module('2ViVe')
 
 
     function Address(type) {
-      this.type = type;
+      this.type = function() {
+        return type;
+      };
     }
 
 
@@ -64,7 +27,7 @@ angular.module('2ViVe')
 
     Address.prototype.toJSON = function() {
       var addr;
-      if (type === 'web') {
+      if (this.type() === 'web') {
         return angular.toJSON({
           firstName: this.firstName,
           lastName: this.lastName,
@@ -81,7 +44,7 @@ angular.module('2ViVe')
 
     Address.prototype.validate = function() {
       var deferred = $q.defer();
-      var type = this.type;
+      var type = this.type();
 
       function validateHandler(response) {
         var failures = response.data.response.failures;
@@ -108,11 +71,11 @@ angular.module('2ViVe')
 
     Address.prototype.update = function() {
       var self = this;
-
+      var type = this.type();
       return self.validate()
         .then(function() {
           return $http
-            .post(API_URL + '/' + type, data, {
+            .post(API_URL + '/' + type, self, {
               transformRequest: function(data)  { return angular.toJson(dashlize(data)); },
               transformResponse: camelCaselize
             });
@@ -191,26 +154,9 @@ angular.module('2ViVe')
 
 
     return {
-      // will be deprecated - zekai
-      validateHomeAddress: function (homeAddress) {
-        return $http.post('/api/v2/addresses/home/validate', homeAddress);
-      },
-      validateWebAddress: function (webAddress) {
-        return $http.post('/api/v2/addresses/website/validate', webAddress);
-      },
-      validateShippingAddress: function (shippingAddress) {
-        return $http.post('/api/v2/addresses/shipping/validate', shippingAddress);
-      },
-      validateBillingAddress: function (billingAddress) {
-        return $http.post('/api/v2/addresses/billing/validate', billingAddress);
-      },
       Address: Address,
       AddressContainer: AddressContainer,
-      fetch: fetchAddress,
-      validateShippingAddressNew: validateAddressWithUrl(SHIPPING_ADDRESS_VALIDATE_URL),
-      validateBillingAddressNew: validateAddressWithUrl(BILLING_ADDRESS_VALIDATE_URL),
-      validateWebAddressNew: validateAddressWithUrl(WEB_ADDRESS_VALIDATE_URL),
-      validateHomeAddressNew: validateAddressWithUrl(HOME_ADDRESS_VALIDATE_URL)
+      fetch: fetchAddress
     };
   }]);
 
