@@ -28,7 +28,7 @@ angular.module('2ViVe')
     Address.prototype.toJSON = function() {
       var addr;
       if (this.type() === 'web') {
-        return angular.toJSON({
+        return angular.toJson({
           firstName: this.firstName,
           lastName: this.lastName,
           email: this.email,
@@ -36,9 +36,9 @@ angular.module('2ViVe')
         });
       }
       else {
-        addr = angular.copy(this);
+        addr = angular.copy(this, {});
         mergeAddress(addr);
-        return angular.toJSON(addr);
+        return angular.toJson(addr);
       }
     };
 
