@@ -44,6 +44,7 @@ angular.module('2ViVe')
 
       function getShippingMethods(countryId, stateId) {
         return $http.get('/api/v2/registrations/orders/shipping-methods', {
+          transformResponse: camelCaselize,
           params: {
             'country-id': countryId,
             'state-id': stateId
