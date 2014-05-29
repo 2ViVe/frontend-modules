@@ -46,15 +46,8 @@ angular.module('2ViVe')
     }])
   .factory('Product', ['$http', 'User', 'CamelCaseLize', '$q', 'DEFAULT_ROLE_CODE', '$sce',
     function($http, User, CamelCaseLize, $q, DEFAULT_ROLE_CODE, $sce) {
-      var ATTRIBUTE_KEY = {
-        'Color': 'colors',
-        'Size': 'sizes'
-      };
-
       var Product = function(id, catalogCode) {
         var product = this;
-        product.colors = [];
-        product.sizes = [];
         product.id = id;
         product.catalogCode = catalogCode ? catalogCode : null;
       };
@@ -81,7 +74,12 @@ angular.module('2ViVe')
             product.data.description = $sce.trustAsHtml(product.data.description);
             angular.forEach(product.data.variants, function(variant) {
               angular.forEach(variant.options, function(option) {
-                var currentOptions = product[ATTRIBUTE_KEY[option.type]];
+                if (product[option.type] === undefined) {
+                  product[option.type] = [];
+                }
+
+                var currentOptions = product[option.type];
+
                 var notAdded = true;
                 angular.forEach(currentOptions, function(currentOption) {
                   if (currentOption.name === option.name) {
