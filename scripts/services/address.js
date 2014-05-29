@@ -120,7 +120,6 @@ angular.module('2ViVe')
       var self = this;
       return $q
         .all(this.types.map(function(type) {
-          console.log(self[type].type());
           return self[type].validate();
         }))
         .then(function(results) {
