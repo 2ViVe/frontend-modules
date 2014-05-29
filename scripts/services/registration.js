@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('2ViVe')
-  .factory('Registration', ['$http', '$q', '$rootScope',
-    function($http, $q, $rootScope) {
+  .factory('Registration', ['$http', '$q', '$rootScope', 'CamelCaseLize', 'Dashlize',
+    function($http, $q, $rootScope, camelCaselize, dashlize) {
       var DEFAULT_REGISTRATION_ROLE_CODE = 'D';
 
       var countries = [];
@@ -57,13 +57,19 @@ angular.module('2ViVe')
           'shipping-address': shippingAddress,
           'billing-address': billingAddress,
           'web-address': webAddress,
-          'line-items': parseLineItems(lineItems),
+          'line-items': lineItems,
           'role-code': roleCode ? roleCode : DEFAULT_REGISTRATION_ROLE_CODE
+        }, {
+          transformResponse: camelCaselize,
+          transformRequest: function(data) {
+            return angular.toJson(dashlize(data));
+          }
         });
       }
 
       function getProducts(countryId, roleCode) {
         return $http.get('/api/v2/registrations/products', {
+          transformResponse: camelCaselize,
           params: {
             'country-id': countryId,
             'role-code': roleCode ? roleCode : DEFAULT_REGISTRATION_ROLE_CODE
@@ -86,7 +92,12 @@ angular.module('2ViVe')
           'shipping-address': shippingAddress,
           'billing-address': billingAddress,
           'web-address': webAddress,
-          'line-items': parseLineItems(lineItems)
+          'line-items': lineItems
+        }, {
+          transformResponse: camelCaselize,
+          transformRequest: function(data) {
+            return angular.toJson(dashlize(data));
+          }
         });
       }
 
