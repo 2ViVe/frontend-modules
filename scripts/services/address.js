@@ -132,7 +132,11 @@ angular.module('2ViVe')
     function failuresToObject(failures) {
       var result = {};
       angular.forEach(failures, function(failure) {
-        result[failure.field] = failure.message;
+        if (failure.field === '') {
+          result[failure.code] = failure.message;
+        } else {
+          result[failure.field] = failure.message;
+        }
       });
 
       return camelCaselize(result);
