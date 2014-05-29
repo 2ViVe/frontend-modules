@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('2ViVe')
-  .factory('Address', ['$http', '$q', 'CamelCaseLize', 'Dashlize', function ($http, $q, camelCaselize, dashlize) {
+  .factory('Address', ['$http', '$q', 'CamelCaseLize', 'Dashlize', function($http, $q, camelCaselize, dashlize) {
 
     var API_URL = '/api/v2/addresses';
 
-    var address,
-        needCache = false,
-        proto;
+    var addressContainer,
+      needCache = false,
+      proto;
 
 
     function Address(type) {
@@ -18,28 +18,21 @@ angular.module('2ViVe')
 
 
     function mergeAddress(address) {
-      address.countryId = address.country.id;
-      address.stateId = address.state.id;
+      if (address.country) {
+        address.countryId = address.country.id;
+        delete address.country;
+      }
 
-      delete address.country;
-      delete address.state;
+      if (address.state) {
+        address.stateId = address.state.id;
+        delete address.state;
+      }
     }
 
     Address.prototype.toJSON = function() {
-      var addr;
-      if (this.type() === 'web') {
-        return {
-          firstName: this.firstName,
-          lastName: this.lastName,
-          email: this.email,
-          phone: this.phone
-        };
-      }
-      else {
-        addr = angular.copy(this, {});
-        mergeAddress(addr);
-        return addr;
-      }
+      var addr = angular.copy(this, {});
+      mergeAddress(addr);
+      return addr;
     };
 
     Address.prototype.validate = function() {
@@ -50,18 +43,20 @@ angular.module('2ViVe')
         var failures = response.data.response.failures;
         if (failures && Object.keys(failures).length) {
           failures = failuresToObject(failures);
-          address[type].errors = failures;
+          addressContainer[type].errors = failures;
           deferred.reject(failures);
         }
         else {
-          delete address[type].errors;
+          delete addressContainer[type].errors;
           deferred.resolve(failures);
         }
       }
 
       $http
         .post(API_URL + '/' + type + '/validate', this, {
-          transformRequest: function(data)  { return angular.toJson(dashlize(data)); },
+          transformRequest: function(data) {
+            return angular.toJson(dashlize(data));
+          },
           transformResponse: camelCaselize
         })
         .then(validateHandler);
@@ -76,7 +71,9 @@ angular.module('2ViVe')
         .then(function() {
           return $http
             .post(API_URL + '/' + type, self, {
-              transformRequest: function(data)  { return angular.toJson(dashlize(data)); },
+              transformRequest: function(data) {
+                return angular.toJson(dashlize(data));
+              },
               transformResponse: camelCaselize
             });
         })
@@ -122,14 +119,15 @@ angular.module('2ViVe')
     proto.validate = function() {
       var self = this;
       return $q
-                .all(this.types.map(function(type) {
-                  return self[type].validate();
-                }))
-                .then(function(results) {
-                  return results.every(function(result) {
-                    return result;
-                  });
-                });
+        .all(this.types.map(function(type) {
+          console.log(self[type].type());
+          return self[type].validate();
+        }))
+        .then(function(results) {
+          return results.every(function(result) {
+            return result;
+          });
+        });
     };
 
     function failuresToObject(failures) {
@@ -147,15 +145,20 @@ angular.module('2ViVe')
         cache: needCache
       }).then(function(resp) {
         needCache = true;
-        address = new AddressContainer(resp.data.response);
-        return address;
+        addressContainer = new AddressContainer(resp.data.response);
+        return addressContainer;
       });
     }
 
 
     return {
-      Address: Address,
-      AddressContainer: AddressContainer,
+      create: function(type) {
+        return new Address(type);
+      },
+      createContainer: function() {
+        addressContainer = new AddressContainer();
+        return addressContainer;
+      },
       fetch: fetchAddress
     };
   }]);
