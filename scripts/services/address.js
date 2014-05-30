@@ -35,6 +35,38 @@ angular.module('2ViVe')
       return addr;
     };
 
+    Address.prototype.cleanData = function() {
+      this.firstName = '';
+      this.m = '';
+      this.lastName = '';
+      this.phone = '';
+
+      if (this.type() !== 'website') {
+        this.street = '';
+        this.streetCont = '';
+        this.city = '';
+        this.zip = '';
+        this.phone = '';
+      }
+    };
+
+    Address.prototype.extendDataFrom = function(address) {
+      this.firstName = address.firstName;
+      this.m = address.m;
+      this.lastName = address.lastName;
+      this.phone = address.phone;
+
+      if (this.type() !== 'website') {
+        this.street = address.street;
+        this.streetCont = address.streetCont;
+        this.city = address.city;
+        this.state = address.state;
+        this.country = address.country;
+        this.zip = address.zip;
+        this.phone = address.phone;
+      }
+    };
+
     Address.prototype.validate = function() {
       var deferred = $q.defer();
       var type = this.type();
