@@ -1,0 +1,193 @@
+<div class="address-panel" data-ng-form name="addressForm">
+  <div class='row'>
+    <div class='medium-12 columns'>
+
+      <h3>
+        {{ title }} Address
+
+        <label ng-if="homeAddress" class='right'>
+          <input type='checkbox'
+                 ng-model="isUseHomeAddress"
+                 ng-change="isUseHomeAddressChange(isUseHomeAddress)"/>
+          Use Home Address
+        </label>
+      </h3>
+
+    </div>
+  </div>
+
+  <div address-field
+       data-label="First Name"
+       data-address-type="addressType"
+       data-name="firstName"
+       data-required="true"
+    >
+    <input type="text"
+           required
+           id="{{addressType}}-firstName"
+           name="firstName"
+           ng-model="address.firstName"/>
+    <small ng-show="submitted && addressForm.firstName.$error.required" class="error">
+      This field is required.
+    </small>
+  </div>
+
+  <div address-field
+       data-label="Middle Initial"
+       data-address-type="addressType"
+       data-name="middleName"
+    >
+    <input type="text"
+           id="{{addressType}}-middleName"
+           name="middleName"
+           ng-model="address.m"
+      />
+    <small ng-show="submitted && addressForm.middleName.$error.required" class="error">
+      This field is required.
+    </small>
+  </div>
+
+  <div address-field
+       data-label="Last Name"
+       data-address-type="addressType"
+       data-name="lastName"
+       data-required="true"
+    >
+    <input type="text"
+           required
+           id="{{addressType}}-lastName"
+           name="lastName"
+           ng-model="address.lastName"
+      >
+    <small ng-show="submitted && addressForm.lastName.$error.required" class="error">
+      This field is required.
+    </small>
+    <small class="error" ng-show="address.errors.lastName">
+      {{ address.errors.lastName }}
+    </small>
+  </div>
+
+  <div address-field
+       data-label="Address Line 1"
+       data-address-type="addressType"
+       data-name="addressLineOne"
+       data-required="true"
+    >
+    <input type="text" required
+           id="{{addressType}}-addressLineOne"
+           name="addressLineOne"
+           ng-model="address.street"/>
+    <small ng-show="submitted && addressForm.addressLineOne.$error.required" class="error">
+      This field is required.
+    </small>
+    <small ng-show="submitted && address.errors.InvalidStreet">
+      {{ address.errors.street }}
+    </small>
+  </div>
+
+  <div address-field
+       data-label="Address Line 2"
+       data-address-type="addressType"
+       data-name="addressLineTwo"
+    >
+    <input type="text"
+           id="{{addressType}}-addressLineTwo"
+           name="addressLineTwo"
+           ng-model="address.streetCont"/>
+  </div>
+
+  <div address-field
+       data-label="City"
+       data-address-type="addressType"
+       data-name="city"
+       data-required="true"
+    >
+    <input type="text" required
+           id="{{addressType}}-city"
+           name="city"
+           ng-model="address.city"/>
+    <small ng-show="address.errors.InvalidAddress" class="error">
+      {{address.errors.InvalidAddress}}
+    </small>
+    <small ng-show="submitted && addressForm.city.$error.required" class="error">
+      This field is required.
+    </small>
+  </div>
+
+  <div address-field
+       data-label="State"
+       data-address-type="addressType"
+       data-name="state"
+       ng-if="address.country"
+       data-required="true"
+    >
+    <select id="{{addressType}}-AddrState"
+            name="addrState"
+            ng-model="address.state"
+            ng-init="address.state = address.country.states[0]"
+            ng-options="state as state.name for state in address.country.states | orderBy:'name'">
+    </select>
+
+    <small ng-show="submitted && addressForm.addrState.$error.required" class="error">
+      This field is required.
+    </small>
+    <small class="error" ng-show="address.errors.stateId">
+      {{ address.errors.stateId }}
+    </small>
+  </div>
+
+  <div address-field
+       data-label="Country"
+       data-address-type="addressType"
+       data-name="country"
+       data-required="true"
+    >
+    <select required id="{{addressType}}-AddrCountry"
+            name="addrCountry"
+            ng-model="address.country"
+            ng-options="country as country.name for country in countries | orderBy:'name'"
+            ng-change=""></select>
+    <small ng-show="submitted && addressForm.addrCountry.$error.required" class="error">
+      This field is required.
+    </small>
+    <small class="error" ng-show="address.errors.countryId">
+      {{ address.errors.countryId }}
+    </small>
+  </div>
+
+  <div address-field
+       data-label="Zip"
+       data-address-type="addressType"
+       data-name="zip"
+       data-required="true"
+    >
+    <input type="text" required="" id="{{addressType}}-AddrZip" name="addrZip" ng-model="address.zip"
+           placeholder="click to edit ... ">
+    <small ng-show="submitted && addressForm.addrZip.$error.required" class="error">
+      This field is required.
+    </small>
+    <small class="error" ng-show="address.errors.zip">
+      {{ address.errors.zip }}
+    </small>
+  </div>
+
+  <div address-field
+       data-label="Phone"
+       data-address-type="addressType"
+       data-name="phone"
+       data-required="true"
+    >
+    <input type="text"
+           id="{{addressType}}-AddrHomePhone"
+           name="addrHomePhone"
+           ng-model="address.phone"
+           required
+           placeholder="click to edit ... ">
+    <small class="error" ng-show="address.errors.phone">
+      {{ address.errors.phone }}
+    </small>
+  </div>
+
+
+</div>
+

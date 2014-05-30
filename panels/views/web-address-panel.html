@@ -1,0 +1,110 @@
+<div class="address-panel" data-ng-form name="addressForm">
+  <div class='row'>
+    <div class='medium-12 columns'>
+
+      <h3>
+        {{ title }} Address
+        <label class='right' ng-if="homeAddress">
+          <input type='checkbox'
+                 ng-model="isUseHomeAddress"
+                 ng-change="isUseHomeAddressChange(isUseHomeAddress)"/>
+          Use Home Address
+        </label>
+      </h3>
+
+    </div>
+  </div>
+
+  <div address-field
+       data-label="First Name"
+       data-address-type="addressType"
+       data-name="firstName"
+       data-required="true"
+    >
+    <input type="text"
+           required
+           id="{{addressType}}-firstName"
+           name="firstName"
+           ng-model="address.firstName"/>
+    <small ng-show="submitted && addressForm.firstName.$error.required" class="error">
+      This field is required.
+    </small>
+    <small class="error" ng-show="address.errors.firstName">
+      {{ address.errors.firstName }}
+    </small>
+  </div>
+
+  <div address-field
+       data-label="Middle Initial"
+       data-address-type="addressType"
+       data-name="middleName"
+    >
+    <input type="text"
+           id="{{addressType}}-middleName"
+           name="middleName"
+           ng-model="address.middleName"
+      />
+  </div>
+
+  <div address-field
+       data-label="Last Name"
+       data-address-type="addressType"
+       data-name="lastName"
+       data-required="true"
+    >
+    <input type="text"
+           required
+           id="{{addressType}}-lastName"
+           name="lastName"
+           ng-model="address.lastName"
+      >
+    <small ng-show="submitted && addressForm.lastName.$error.required" class="error">
+      This field is required.
+    </small>
+    <small class="error" ng-show="address.errors.lastName">
+      {{ address.errors.lastName }}
+    </small>
+  </div>
+
+
+  <div address-field
+       data-label="Phone"
+       data-address-type="addressType"
+       data-name="phone"
+       data-required="true"
+    >
+    <input type="text"
+           required
+           id="{{addressType}}-phone"
+           name="addrHomePhone"
+           ng-model="address.phone"
+      >
+    <small ng-show="submitted && addressForm.addrHomePhone.$error.required" class="error">
+      This field is required.
+    </small>
+    <small class="error" ng-show="address.errors.phone">
+      {{ address.errors.phone }}
+    </small>
+  </div>
+
+  <div address-field
+       data-label="Email"
+       data-address-type="addressType"
+       data-name="email"
+    >
+    <input type="email"
+           id="{{addressType}}-email"
+           name="addrEmail"
+           ng-model="address.email"
+      >
+
+    <small ng-show="submitted && addressForm.addrEmail.$error.email" class="error">
+      Email is invalid.
+    </small>
+    <small class="error" ng-show="address.errors.email">
+      {{ address.errors.email }}
+    </small>
+  </div>
+
+</div>
+

@@ -1,0 +1,62 @@
+<div ng-form name="personalForm">
+  <div class='row'>
+    <div class='medium-12 columns'>
+      <h3>Personal Information</h3>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="medium-4 columns">
+      <label class="inline required" for="birthday">Date of Birth</label>
+    </div>
+    <div class="medium-8 columns">
+      <input type="text"
+             required
+             ng-model="account.birthday"
+             data-date-of-birth
+             id="birthday"
+             name="birthday">
+      <small ng-show="submitted && personalForm.birthday.$error.required" class="error">
+        This field is required.
+      </small>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class='medium-4 columns'>
+      <label class="inline required" for="social-security-number">SSN</label>
+    </div>
+    <div class='medium-8 columns'>
+      <input type="text"
+             required
+             data-availabilities-validator="ssn"
+             id="social-security-number"
+             name="socialSecurityNumber"
+             ng-model="account.socialSecurityNumber">
+      <small ng-show="submitted && personalForm.socialSecurityNumber.$error.required" class="error">
+        This field is required.
+      </small>
+      <small ng-show="personalForm.socialSecurityNumber.$error.available" class="error">
+        SSN is invalid.
+      </small>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class='medium-4 columns'>
+      <label class="inline" for="tax-id">Tax ID</label>
+    </div>
+    <div class='medium-8 columns'>
+      <input ng-show="!isUseSSN"
+             type="text"
+             id="tax-id"
+             name="taxId"
+             ng-model="account.taxId">
+
+      <label>
+        <input type='checkbox' ng-model="isUseSSN"/>
+        Use Social Security Number
+      </label>
+    </div>
+  </div>
+</div>
