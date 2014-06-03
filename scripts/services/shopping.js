@@ -81,6 +81,12 @@ angular.module('2ViVe')
               Variant.fetch(item['variant-id'], item['catalog-code'])
                 .then(function(response) {
                   item.data = response.data.response;
+                  angular.forEach(response.data.response.prices, function(price) {
+                    if (price.roleCode === 'R') {
+                      item.retailPrice = price.price;
+                      return null;
+                    }
+                  });
                 });
             });
           };
