@@ -6,6 +6,11 @@
     "Liu Yang <zation1@gmail.com>"
   ],
   "main": "scripts/main.js",
+  "dependencies": {
+    "angular": "1.2.6",
+    "moment": "~2.6.0",
+    "pikaday": "~1.2.0"
+  },
   "private": true,
   "ignore": [
     "**/.*",
