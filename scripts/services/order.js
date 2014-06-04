@@ -85,7 +85,7 @@ angular.module('2ViVe')
         adjustments: function(shippingMethodId) {
           return $http.post('/api/v2/orders/adjustments', {
             'shipping-method-id': shippingMethodId,
-            'line-items': Order.data['line-items'],
+            'line-items': Order.data.lineItems,
             'shipping-address': Order.data.shippingAddress,
             'billing-address': Order.data.billingAddress
           }, {
