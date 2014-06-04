@@ -1,23 +1,34 @@
 'use strict';
 
 angular.module('2ViVe')
-  .factory('Order', ['$http', 'CamelCaseLize',
-    function($http, CamelCaseLize) {
+  .factory('Order', ['$http', 'CamelCaseLize', 'Dashlize',
+    function($http, CamelCaseLize, dashlize) {
       var Order = {
         data: {},
         updateBillingAddress: function(orderId, billingAddress) {
-          return $http.post('/api/v2/orders/' + orderId + '/addresses/billing', billingAddress)
+          return $http.post('/api/v2/orders/' + orderId + '/addresses/billing',
+            billingAddress, {
+              transformResponse: CamelCaseLize,
+              transformRequest: function(data) {
+                return angular.toJson(dashlize(data));
+              }
+            })
             .success(function(data) {
-              Order.data['billing-address'] = data.response['billing-address'];
+              Order.data.billingAddress = data.response.billingAddress;
             });
         },
         updateShippingAddress: function(orderId, shippingAddress, shippingMethodId) {
           return $http.post('/api/v2/orders/' + orderId + '/shipping', {
             'shipping-method-id': shippingMethodId,
             'shipping-address': shippingAddress
+          }, {
+            transformResponse: CamelCaseLize,
+            transformRequest: function(data) {
+              return angular.toJson(dashlize(data));
+            }
           }).success(function(data) {
-            Order.data['shipping-method'] = data.response['shipping-method'];
-            Order.data['shipping-address'] = data.response['shipping-address'];
+            Order.data.shippingMethod = data.response.shippingMethod;
+            Order.data.shippingAddress = data.response.shippingAddress;
           });
         },
         detail: function(id) {
@@ -41,15 +52,17 @@ angular.module('2ViVe')
           });
         },
         adjustmentsWithOrderId: function(orderId) {
-          return $http.get('/api/v2/orders/' + orderId + '/adjustments')
+          return $http.get('/api/v2/orders/' + orderId + '/adjustments', {
+            transformResponse: CamelCaseLize
+          })
             .success(function(data) {
               Order.data.adjustments = data.response;
             });
         },
         currentShippingMethod: function() {
           var currentShippingMethod = null;
-          angular.forEach(Order.data['available-shipping-methods'], function(shippingMethod) {
-            if (shippingMethod.id === Order.data['shipping-method-id']) {
+          angular.forEach(Order.data.availableShippingMethods, function(shippingMethod) {
+            if (shippingMethod.id === Order.data.shippingMethodId) {
               currentShippingMethod = shippingMethod;
               return null;
             }
@@ -59,6 +72,11 @@ angular.module('2ViVe')
         checkout: function(lineItems) {
           return $http.post('/api/v2/orders/checkout', {
             'line-items': lineItems
+          }, {
+            transformResponse: CamelCaseLize,
+            transformRequest: function(data) {
+              return angular.toJson(dashlize(data));
+            }
           }).then(function(response) {
             Order.data = response.data.response;
             return Order;
@@ -68,8 +86,13 @@ angular.module('2ViVe')
           return $http.post('/api/v2/orders/adjustments', {
             'shipping-method-id': shippingMethodId,
             'line-items': Order.data['line-items'],
-            'shipping-address': Order.data['shipping-address'],
-            'billing-address': Order.data['billing-address']
+            'shipping-address': Order.data.shippingAddress,
+            'billing-address': Order.data.billingAddress
+          }, {
+            transformResponse: CamelCaseLize,
+            transformRequest: function(data) {
+              return angular.toJson(dashlize(data));
+            }
           }).success(function(data) {
             Order.data.adjustments = data.response;
           });
@@ -79,9 +102,14 @@ angular.module('2ViVe')
             'payment-method-id': paymentMethodId,
             'shipping-method-id': shippingMethodId,
             'creditcard': creditCard,
-            'shipping-address': Order.data['shipping-address'],
-            'billing-address': Order.data['billing-address'],
-            'line-items': Order.data['line-items']
+            'shipping-address': Order.data.shippingAddress,
+            'billing-address': Order.data.billingAddress,
+            'line-items': Order.data.lineItems
+          }, {
+            transformResponse: CamelCaseLize,
+            transformRequest: function(data) {
+              return angular.toJson(dashlize(data));
+            }
           });
         }
       };
