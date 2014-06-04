@@ -50,36 +50,45 @@ angular.module('2ViVe')
       }
     };
 
-    Address.prototype.extendDataFrom = function(address) {
-      this.firstName = address.firstName;
-      this.m = address.m;
-      this.lastName = address.lastName;
-      this.phone = address.phone;
+    function extendData(from, to, type) {
+      to.firstName = from.firstName;
+      to.m = from.m;
+      to.lastName = from.lastName;
+      to.phone = from.phone;
 
-      if (this.type() !== 'website') {
-        this.street = address.street;
-        this.streetCont = address.streetCont;
-        this.city = address.city;
-        this.state = address.state;
-        this.country = address.country;
-        this.zip = address.zip;
-        this.phone = address.phone;
+      if (type !== 'website') {
+        to.street = from.street;
+        to.streetCont = from.streetCont;
+        to.city = from.city;
+        to.state = from.state;
+        to.country = from.country;
+        to.zip = from.zip;
+        to.phone = from.phone;
       }
+    }
+
+    Address.prototype.extendDataTo = function(address) {
+      extendData(this, address, this.type());
+    };
+
+    Address.prototype.extendDataFrom = function(address) {
+      extendData(address, this, this.type());
     };
 
     Address.prototype.validate = function() {
       var deferred = $q.defer();
       var type = this.type();
+      var address = this;
 
       function validateHandler(response) {
         var failures = response.data.response.failures;
         if (failures && Object.keys(failures).length) {
           failures = failuresToObject(failures);
-          addressContainer[type].errors = failures;
+          address.errors = failures;
           deferred.reject(failures);
         }
         else {
-          delete addressContainer[type].errors;
+          delete address.errors;
           deferred.resolve(failures);
         }
       }
