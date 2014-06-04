@@ -6,6 +6,11 @@ angular.module('2ViVe')
     return function (keyHandlerFn) {
 
       return function switchKey(data) {
+        // TODO: need to remove this after Zekai check it.
+        if (data.toJSON) {
+          data = data.toJSON()
+        }
+
         data = angular.fromJson(data);
         var keys = Object.keys(data);
         var result = angular.isArray(data) ? [] : {};
