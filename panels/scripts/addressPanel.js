@@ -24,11 +24,11 @@ angular
         submitted: '=',
         defaultUseHomeAddress: '@'
       },
-      link: function(scope, el, attr, ctrl) {
+      link: function(scope, el) {
 
         el.on('change', 'input[required]', function() {
           if (isAllFilled()) {
-            ctrl.validate();
+            scope.validate();
           }
         });
 
