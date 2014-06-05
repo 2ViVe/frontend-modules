@@ -9,7 +9,11 @@ angular
         .fetch()
         .then(function(countries) {
           $scope.countries = countries.data;
-          $scope.address.country = Countries.defaultCountry();
+
+          if (!$scope.defaultUseHomeAddress) {
+            $scope.address.country = Countries.defaultCountry();
+            $scope.address.state = $scope.address.country.states[0];
+          }
         });
     }
 

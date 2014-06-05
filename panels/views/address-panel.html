@@ -124,7 +124,6 @@
     <select id="{{addressType}}-AddrState"
             name="state"
             ng-model="address.state"
-            ng-init="address.state = address.country.states[0]"
             ng-options="state as state.name for state in address.country.states | orderBy:'name'">
     </select>
 

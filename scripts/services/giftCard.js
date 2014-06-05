@@ -14,6 +14,15 @@ angular.module('2ViVe')
         });
       };
 
+      GiftCards.resendEmail = function(code){
+        var url = '/api/v2/giftcards/' + code + '/emails';
+        return $http.post(url, {}, {
+          transformResponse: camelcase
+        }).then(function(response) {
+          return response.data;
+        });
+      };
+
       return GiftCards;
     }])
   .factory('GiftCard', ['$http', 'ipCookie', '$location', 'DEFAULT_COUNTRY_ID', 'User', '$q', 'LocalStorage', 'DEFAULT_ROLE_CODE', 'Dashlize',
