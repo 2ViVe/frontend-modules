@@ -23,6 +23,26 @@ angular
         homeAddress: '=',
         submitted: '=',
         defaultUseHomeAddress: '@'
+      },
+      link: function(scope, el, attr, ctrl) {
+        var requiredInputs = el.find('input[required]');
+
+        requiredInputs.on('change', function() {
+          if (isAllFilled()) {
+            ctrl.validate();
+          }
+        });
+
+        function isAllFilled() {
+          var values = [];
+          requiredInputs.each(function(idx, input) {
+            if ($(input).val().trim().length > 0) {
+              values.push(input);
+            }
+          });
+
+          return values.length === requiredInputs.length;
+        }
       }
     };
   }]);

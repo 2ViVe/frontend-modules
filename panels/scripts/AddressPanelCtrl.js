@@ -27,4 +27,21 @@ angular
         $scope.address.cleanData();
       }
     };
+
+    $scope.validate = function() {
+      $scope
+        .address
+        .validate()
+        .then(null, function(failures) {
+          var keys = Object.keys(failures);
+          angular.forEach(keys, function(key) {
+            if ($scope.addressForm[key]) {
+              $scope.addressForm[key].$setValidity('remoteError', false);
+            }
+          });
+
+
+        });
+    };
+
   }]);

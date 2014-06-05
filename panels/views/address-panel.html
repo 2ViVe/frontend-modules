@@ -122,13 +122,13 @@
        data-required="true"
     >
     <select id="{{addressType}}-AddrState"
-            name="addrState"
+            name="state"
             ng-model="address.state"
             ng-init="address.state = address.country.states[0]"
             ng-options="state as state.name for state in address.country.states | orderBy:'name'">
     </select>
 
-    <small ng-show="submitted && addressForm.addrState.$error.required" class="error">
+    <small ng-show="submitted && addressForm.state.$error.required" class="error">
       This field is required.
     </small>
     <small class="error" ng-show="address.errors.stateId">
@@ -143,11 +143,11 @@
        data-required="true"
     >
     <select required id="{{addressType}}-AddrCountry"
-            name="addrCountry"
+            name="country"
             ng-model="address.country"
             ng-options="country as country.name for country in countries | orderBy:'name'"
             ng-change=""></select>
-    <small ng-show="submitted && addressForm.addrCountry.$error.required" class="error">
+    <small ng-show="submitted && addressForm.country.$error.required" class="error">
       This field is required.
     </small>
     <small class="error" ng-show="address.errors.countryId">
@@ -179,7 +179,7 @@
     >
     <input type="text"
            id="{{addressType}}-AddrHomePhone"
-           name="addrHomePhone"
+           name="phone"
            ng-model="address.phone"
            required
            placeholder="click to edit ... ">
