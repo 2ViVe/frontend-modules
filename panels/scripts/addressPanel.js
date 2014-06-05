@@ -24,13 +24,9 @@ angular
         submitted: '=',
         defaultUseHomeAddress: '@'
       },
-      compile: function() {
-        console.log(arguments)
-      },
       link: function(scope, el, attr, ctrl) {
-        var requiredInputs = el.find('input[required]');
 
-        requiredInputs.on('change', function() {
+        el.on('change', 'input[required]', function() {
           if (isAllFilled()) {
             ctrl.validate();
           }
