@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('2ViVe')
-  .factory('Address', ['$http', '$q', 'CamelCaseLize', 'Dashlize', function($http, $q, camelCaselize, dashlize) {
+  .factory('Address', ['$http', '$q', 'CamelCaseLize', 'Dashlize', 'Registration.Countries', function($http, $q, camelCaselize, dashlize, Countries) {
 
     var API_URL = '/api/v2/addresses';
 
@@ -170,6 +170,22 @@ angular.module('2ViVe')
       return this;
     };
 
+    proto.fullfill = function() {
+      var self = this;
+      var promises = this.types.map(function(type) {
+        var addr = self[type];
+
+        return Countries
+                .getById(addr.countryId)
+                .then(function(country) {
+                  addr.country = country;
+                  return addr
+                });
+      });
+
+      return $q.all(promises).then(function() { return self });
+    };
+
     proto.validate = function() {
       var self = this;
       return $q
@@ -203,7 +219,7 @@ angular.module('2ViVe')
       }).then(function(resp) {
         needCache = true;
         addressContainer = new AddressContainer(resp.data.response);
-        return addressContainer;
+        return addressContainer.fullfill();
       });
     }
 
