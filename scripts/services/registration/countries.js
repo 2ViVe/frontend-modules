@@ -16,6 +16,15 @@ angular.module('2ViVe')
             $http.get('/api/v2/registrations/countries', { cache: true })
               .then(function(response) {
                 Countries.data = response.data.response;
+
+                Countries.data.forEach(function(country) {
+                   country.getStateById = function(id) {
+                     return this.states.filter(function(state) {
+                       return state.id === id;
+                     })[0];
+                   };
+                });
+
                 deferred.resolve(Countries);
               });
           }

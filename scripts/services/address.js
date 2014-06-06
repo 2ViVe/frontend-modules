@@ -179,6 +179,7 @@ angular.module('2ViVe')
                 .findById(addr.countryId)
                 .then(function(country) {
                   addr.country = country;
+                  addr.state = country.getStateById(addr.stateId);
                   return addr
                 });
       });
