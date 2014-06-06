@@ -35,6 +35,18 @@ angular.module('2ViVe')
       return addr;
     };
 
+    Address.prototype.fetch = function() {
+      var type = this.type();
+      return $http.get(API_URL, {
+        params: {
+          types: type
+        },
+        transformResponse: camelCaselize
+      }).then(function(response) {
+        return response.data.response[type];
+      });
+    };
+
     Address.prototype.cleanData = function() {
       this.firstName = '';
       this.m = '';
