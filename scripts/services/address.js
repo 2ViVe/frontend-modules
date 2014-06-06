@@ -137,8 +137,9 @@ angular.module('2ViVe')
         });
     };
 
-    function AddressContainer() {
+    function AddressContainer(data) {
       this.types = [];
+      this.extend(data);
     }
 
 
