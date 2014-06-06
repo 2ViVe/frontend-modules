@@ -109,6 +109,11 @@ angular.module('2ViVe')
           password: password,
           email: email,
           'shipping-address': shippingAddress
+        }, {
+          transformResponse: camelCaselize,
+          transformRequest: function(data) {
+            return angular.toJson(dashlize(data));
+          }
         });
       }
 
