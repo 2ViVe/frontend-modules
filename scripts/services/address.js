@@ -176,7 +176,7 @@ angular.module('2ViVe')
         var addr = self[type];
 
         return Countries
-                .getById(addr.countryId)
+                .findById(addr.countryId)
                 .then(function(country) {
                   addr.country = country;
                   return addr
