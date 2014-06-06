@@ -22,6 +22,7 @@ angular.module('2ViVe')
               if (error.status === 400) {
                 UrlHandler.goToRetailSite('/signin');
               }
+              deferred.reject(error);
             });
           });
 
