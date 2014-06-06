@@ -27,6 +27,30 @@ angular.module('2ViVe')
           });
 
           return deferred.promise;
+        },
+        getByCatalog : function(catalogCode){
+          var deferred = $q.defer();
+
+          User.fetch().finally(function() {
+            $http.get('/api/v2/products', {
+              transformResponse: CamelCaseLize,
+              cache: true,
+              params: {
+                'role-code': User.isLogin ? null : DEFAULT_ROLE_CODE,
+                'country-id': User.isLogin ? null : DEFAULT_COUNTRY_ID,
+                'catalog-code': catalogCode
+              }
+            }).then(function(response) {
+              deferred.resolve(response.data.response);
+            }).catch(function(error) {
+              if (error.status === 400) {
+                UrlHandler.goToRetailSite('/signin');
+              }
+              deferred.reject(error);
+            });
+          });
+
+          return deferred.promise;
         }
       };
     }])
