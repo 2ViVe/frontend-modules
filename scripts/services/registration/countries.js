@@ -3,6 +3,7 @@
 angular.module('2ViVe')
   .factory('Registration.Countries', ['$http', 'DEFAULT_COUNTRY_ID', '$q',
     function($http, DEFAULT_COUNTRY_ID, $q) {
+
       var Countries = {
         data: [],
         fetch: function() {
@@ -21,6 +22,7 @@ angular.module('2ViVe')
 
           return promise;
         },
+
         defaultCountry: function() {
           var result = null;
           angular.forEach(Countries.data, function(country) {
@@ -30,6 +32,28 @@ angular.module('2ViVe')
             }
           });
           return result;
+        },
+
+        findByName: function(name) {
+          return Countries
+                  .fetch()
+                  .then(function() {
+                    var countries = Countries.data;
+                    return countries.filter(function(country) {
+                      return country.name === name;
+                    })[0];
+                  });
+        },
+
+        findById: function(id) {
+          return Countries
+            .fetch()
+            .then(function() {
+              var countries = Countries.data;
+              return countries.filter(function(country) {
+                return country.id === id;
+              })[0];
+            })
         }
       };
 
