@@ -15,7 +15,13 @@ angular.module('2ViVe')
           } else {
             $http.get('/api/v2/registrations/countries', { cache: true })
               .then(function(response) {
-                Countries.data = response.data.response;
+                response.data.response.forEach(function(country, index) {
+                  if (Countries.data[index]) {
+                    return;
+                  }
+                  Countries.data[index] = {};
+                  angular.extend(Countries.data[index], country);
+                });
 
                 Countries.data.forEach(function(country) {
                    country.getStateById = function(id) {
