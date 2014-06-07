@@ -133,6 +133,13 @@ angular.module('2ViVe')
         .then(function(resp) {
           var data = resp.data.response;
           self = angular.extend(self, data);
+          Countries
+            .findById(self.countryId)
+            .then(function(country) {
+              self.country = country;
+              self.state = country.getStateById(self.stateId);
+            });
+
           return self;
         });
     };
