@@ -58,7 +58,6 @@ angular.module('2ViVe')
             .fetch()
             .then(function() {
               var countries = Countries.data;
-              debugger;
               return countries.filter(function(country) {
                 return country.id === id;
               })[0];
