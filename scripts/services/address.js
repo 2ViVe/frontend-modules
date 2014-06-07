@@ -132,8 +132,8 @@ angular.module('2ViVe')
         })
         .then(function(resp) {
           var data = resp.data.response;
-          angular.extend(self[type], data);
-          return data;
+          self = angular.extend(self, data);
+          return self;
         });
     };
 
@@ -178,7 +178,7 @@ angular.module('2ViVe')
                 .findById(addr.countryId)
                 .then(function(country) {
                   addr.country = country;
-                  addr.state = country.getStateById(addr.stateId);
+                  addr.state = addr.country.getStateById(addr.stateId);
                   return addr
                 });
       });
