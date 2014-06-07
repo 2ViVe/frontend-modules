@@ -81,7 +81,7 @@ angular.module('2ViVe')
             Order.data = response.data.response;
             angular.forEach(Order.data.lineItems, function(lineItem) {
               angular.forEach(lineItems, function(lineItemInShoppingCart) {
-                if (lineItem.variantId = lineItemInShoppingCart.variantId) {
+                if (lineItem.variantId == lineItemInShoppingCart.variantId) {
                   lineItem.personalizedValues = lineItemInShoppingCart.personalizedValues;
                 }
               });
