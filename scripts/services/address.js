@@ -174,6 +174,10 @@ angular.module('2ViVe')
       var promises = this.types.map(function(type) {
         var addr = self[type];
 
+        if (!addr.countryId) {
+          return;
+        }
+
         return Countries
                 .findById(addr.countryId)
                 .then(function(country) {
