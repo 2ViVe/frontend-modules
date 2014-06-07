@@ -8,20 +8,14 @@ angular.module('2ViVe')
         data: [],
         fetch: function() {
           var deferred = $q.defer(),
-            promise = deferred.promise;
+              promise = deferred.promise;
 
           if (Countries.data.length > 0) {
             deferred.resolve(Countries);
           } else {
             $http.get('/api/v2/registrations/countries', { cache: true })
               .then(function(response) {
-                response.data.response.forEach(function(country, index) {
-                  if (Countries.data[index]) {
-                    return;
-                  }
-                  Countries.data[index] = {};
-                  angular.extend(Countries.data[index], country);
-                });
+                Countries.data = response.data.response;
 
                 Countries.data.forEach(function(country) {
                    country.getStateById = function(id) {
@@ -34,7 +28,6 @@ angular.module('2ViVe')
                 deferred.resolve(Countries);
               });
           }
-
           return promise;
         },
 
