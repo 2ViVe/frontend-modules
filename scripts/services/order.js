@@ -79,6 +79,13 @@ angular.module('2ViVe')
             }
           }).then(function(response) {
             Order.data = response.data.response;
+            angular.forEach(Order.data.lineItems, function(lineItem) {
+              angular.forEach(lineItems, function(lineItemInShoppingCart) {
+                if (lineItem.variantId = lineItemInShoppingCart.variantId) {
+                  lineItem.personalizedValues = lineItemInShoppingCart.personalizedValues;
+                }
+              });
+            });
             return Order;
           });
         },
