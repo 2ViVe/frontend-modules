@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('2ViVe')
-  .factory('Shopping', ['$http', 'LocalStorage', 'User', '$location', 'Variant', '$q', 'DEFAULT_ROLE_CODE',
-    function($http, LocalStorage, User, $location, Variant, $q, DEFAULT_ROLE_CODE) {
+  .factory('Shopping', ['$http', 'LocalStorage', 'User', '$location', 'Variant', '$q', 'DEFAULT_ROLE_CODE', 'CamelCaseLize', 'Dashlize',
+    function($http, LocalStorage, User, $location, Variant, $q, DEFAULT_ROLE_CODE, CamelCaseLize, dashlize) {
       var Shopping = {
         mergeItems: function() {
           return Shopping.addItems(Shopping.items);
@@ -25,11 +25,23 @@ angular.module('2ViVe')
           Shopping.items.splice(itemIndex, 1);
           return Shopping.update();
         },
+        processedItems: function() {
+          var items = angular.copy(Shopping.items);
+          angular.forEach(items, function(item) {
+            delete item.data;
+            delete item.retailPrice;
+          });
+          return items;
+        },
         update: function() {
           var url = User.isLogin ?
             '/api/v2/shopping-carts/users/line-items' :
             '/api/v2/shopping-carts/visitors/' + LocalStorage.getVisitorId() + '/line-items';
-          return $http.put(url, Shopping.items);
+          return $http.put(url, Shopping.processedItems(), {
+            transformRequest: function(data) {
+              return angular.toJson(dashlize(data));
+            }
+          });
         },
         addItems: function(items) {
           var url = User.isLogin ?
@@ -40,7 +52,7 @@ angular.module('2ViVe')
               Shopping.items = data.response;
             });
         },
-        add: function(variant, quantity, catalogCode) {
+        add: function(variant, quantity, catalogCode, personalizedValues) {
           var url = User.isLogin ?
             '/api/v2/shopping-carts/users/line-items' :
             '/api/v2/shopping-carts/visitors/' + LocalStorage.getVisitorId() + '/line-items';
@@ -50,7 +62,8 @@ angular.module('2ViVe')
               'variant-id': variant.id,
               'quantity': quantity,
               'catalog-code': catalogCode,
-              'role-code': User.isLogin ? null : DEFAULT_ROLE_CODE
+              'role-code': User.isLogin ? null : DEFAULT_ROLE_CODE,
+              'personalized-values': personalizedValues
             }
           ]).success(function(data) {
             Shopping.items = data.response;
@@ -78,7 +91,7 @@ angular.module('2ViVe')
         fetch: function() {
           var updateItemsWithVariantsData = function() {
             angular.forEach(Shopping.items, function(item) {
-              Variant.fetch(item['variant-id'], item['catalog-code'])
+              Variant.fetch(item.variantId, item.catalogCode)
                 .then(function(response) {
                   item.data = response.data.response;
                   angular.forEach(response.data.response.prices, function(price) {
@@ -94,19 +107,21 @@ angular.module('2ViVe')
           var deferred = $q.defer();
           User.fetch().finally(function() {
             if (User.isLogin) {
-              $http.get('/api/v2/shopping-carts/users')
-                .then(function(response) {
-                  Shopping.items = response.data.response['line-items'];
+              $http.get('/api/v2/shopping-carts/users', {
+                transformResponse: CamelCaseLize
+              }).then(function(response) {
+                  Shopping.items = response.data.response.lineItems;
                   updateItemsWithVariantsData();
                   deferred.resolve(Shopping);
                 });
             } else if (LocalStorage.isVisitorIdSaved()) {
               $http.get('/api/v2/shopping-carts/visitors/' + LocalStorage.getVisitorId(), {
+                transformResponse: CamelCaseLize,
                 params: {
                   'role-code': DEFAULT_ROLE_CODE
                 }
               }).then(function(response) {
-                  Shopping.items = response.data.response['line-items'];
+                  Shopping.items = response.data.response.lineItems;
                   updateItemsWithVariantsData();
                   deferred.resolve(Shopping);
                 });
@@ -114,8 +129,13 @@ angular.module('2ViVe')
               $http.post('/api/v2/shopping-carts/visitors', {
                 'id': LocalStorage.createVisitorId(),
                 'role-code': DEFAULT_ROLE_CODE
+              }, {
+                transformResponse: CamelCaseLize,
+                transformRequest: function(data) {
+                  return angular.toJson(dashlize(data));
+                }
               }).then(function(response) {
-                Shopping.items = response.data.response['line-items'];
+                Shopping.items = response.data.response.lineItems;
                 updateItemsWithVariantsData();
                 deferred.resolve(Shopping);
               });
