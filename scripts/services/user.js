@@ -17,10 +17,12 @@ angular.module('2ViVe')
         var self = this;
         return $http.post('/api/v2/profile', this, {
           transformRequest: function(data) {
-            data = angular.copy(data);
-            delete data.login;
-            delete data.ssn;
-            return angular.toJson(dashlize(data));
+            var sendData = {
+              birthDate: data.birthDate,
+              email: data.email,
+              login: data.login
+            };
+            return angular.toJson(dashlize(sendData));
           },
           transformResponse: camelCaseLize
         }).then(function() {
