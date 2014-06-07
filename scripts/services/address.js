@@ -139,7 +139,6 @@ angular.module('2ViVe')
 
     function AddressContainer(data) {
       this.types = [];
-      this.extend(data);
     }
 
 
@@ -219,7 +218,8 @@ angular.module('2ViVe')
         cache: needCache
       }).then(function(resp) {
         needCache = true;
-        addressContainer = new AddressContainer(resp.data.response);
+        addressContainer = new AddressContainer();
+        addressContainer.extend(resp.data.response);
         return addressContainer.fullfill();
       });
     }
