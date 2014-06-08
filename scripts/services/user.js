@@ -45,6 +45,7 @@ angular.module('2ViVe')
 
       var User = {
         isLogin: false,
+        shouldRenew: false,
         login: function(username, password, isRemember) {
           return $http.post('/api/login', {
             user: username,
@@ -79,14 +80,21 @@ angular.module('2ViVe')
                 angular.extend(user, resp.data.response);
               }
 
+              var nextRenewalDate = moment(user.nextRenewalDate);
+              var serverCurrentTime = moment(resp.data.meta.xServerCurrentTime);
+              if (!nextRenewalDate.isValid() || nextRenewalDate.isBefore(serverCurrentTime)) {
+                User.shouldRenew = true;
+              } else {
+                User.shouldRenew = false;
+                useCache = true;
+              }
+
               User.data = user;
               User.isLogin = true;
               deferred.resolve(user);
             }).catch(function() {
               User.isLogin = false;
               deferred.reject(user);
-            }).finally(function() {
-              useCache = true;
             });
           }
 
