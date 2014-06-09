@@ -42,12 +42,13 @@ angular.module('2ViVe')
         return promise;
       }
 
-      function getShippingMethods(countryId, stateId) {
+      function getShippingMethods(countryId, stateId, variantIds) {
         return $http.get('/api/v2/registrations/orders/shipping-methods', {
           transformResponse: camelCaselize,
           params: {
             'country-id': countryId,
-            'state-id': stateId
+            'state-id': stateId,
+            'variant-ids': variantIds
           }
         });
       }
