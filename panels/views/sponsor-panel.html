@@ -6,14 +6,15 @@
   </div>
 
   <div class="row">
+    {{required}}
 
     <div class="small-4 columns">
-      <label class="inline required" for="sponsor">Sponsor ID</label>
+      <label class="inline" ng-class="{required: required}" for="sponsor">Sponsor ID</label>
     </div>
     <div class="small-8 end columns">
       <input type="text"
              id="sponsor" name="sponsor"
-             required
+             ng-required="{{required}}"
              ng-model="account.sponsor"
              data-sponsor-validator
              data-sponsor-name="sponsorName"
