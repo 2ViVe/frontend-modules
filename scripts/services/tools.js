@@ -16,7 +16,8 @@ angular.module('2ViVe')
         var filesArr = {},
           result = resp.data.response;
         angular.forEach(result, function (files, folderName) {
-          filesArr[folderName] = [];
+          var replacedFolderName = folderName.replace(/_/g,' ');
+          filesArr[replacedFolderName] = [];
           angular.forEach(files,function (filename) {
             var item = {};
             item.type = /[^.]+$/.exec(filename)[0] || '';
@@ -26,8 +27,8 @@ angular.module('2ViVe')
             }
             item.downloadUrl = downloadUrlPrefix + folderName + '/' + filename;
             item.viewUrl = viewUrlPrefix + folderName + '/' + filename;
-            item.filename = filename;
-            filesArr[folderName].push(item);
+            item.filename = filename.replace(/\.\w+$/,'').replace(/_/g,' ');
+            filesArr[replacedFolderName].push(item);
           });
         });
         return filesArr;
