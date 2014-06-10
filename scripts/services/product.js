@@ -97,13 +97,14 @@ angular.module('2ViVe')
             }
 
             product.data.description = $sce.trustAsHtml(product.data.description);
+            product.options = {};
             angular.forEach(product.data.variants, function(variant) {
               angular.forEach(variant.options, function(option) {
-                if (product[option.type] === undefined) {
-                  product[option.type] = [];
+                if (product.options[option.type] === undefined) {
+                  product.options[option.type] = [];
                 }
 
-                var currentOptions = product[option.type];
+                var currentOptions = product.options[option.type];
 
                 var notAdded = true;
                 angular.forEach(currentOptions, function(currentOption) {
@@ -133,11 +134,6 @@ angular.module('2ViVe')
         angular.forEach(product.data.variants, function(variant) {
           var isThisVariant = true;
           angular.forEach(variant.options, function(option) {
-            if (!options[option.type].name) {
-              isThisVariant = false;
-              return;
-            }
-
             if (options[option.type].name !== option.name) {
               isThisVariant = false;
             }
