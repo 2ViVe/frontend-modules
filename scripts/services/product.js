@@ -133,6 +133,11 @@ angular.module('2ViVe')
         angular.forEach(product.data.variants, function(variant) {
           var isThisVariant = true;
           angular.forEach(variant.options, function(option) {
+            if (!options[option.type].name) {
+              isThisVariant = false;
+              return;
+            }
+
             if (options[option.type].name !== option.name) {
               isThisVariant = false;
             }
