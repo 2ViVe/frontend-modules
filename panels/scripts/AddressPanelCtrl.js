@@ -11,15 +11,21 @@ angular
           $scope.countries = countries.data;
 
           if (!$scope.defaultUseHomeAddress) {
-            $scope.address.country = Countries.defaultCountry();
-            $scope.address.state = $scope.address.country.states[0];
+            if (!$scope.address.country) {
+              $scope.address.country = Countries.defaultCountry();
+            }
+            if (!$scope.address.state) {
+              $scope.address.state = $scope.address.country.states[0];
+            }
           }
         });
     }
 
     if ($scope.defaultUseHomeAddress) {
       $scope.isUseHomeAddress = true;
-      $scope.address.extendDataFrom($scope.homeAddress);
+      if (!$scope.address.country) {
+        $scope.address.extendDataFrom($scope.homeAddress);
+      }
     } else {
       $scope.isUseHomeAddress = false;
     }
@@ -43,8 +49,6 @@ angular
               $scope.addressForm[key].$setValidity('remoteError', false);
             }
           });
-
-
         });
     };
 

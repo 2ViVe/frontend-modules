@@ -36,7 +36,7 @@ angular
           var values = [];
           var requiredInputs = el.find('input[required]');
           requiredInputs.each(function(idx, input) {
-            if ($(input).val().trim().length > 0) {
+            if (angular.element(input).val().trim().length > 0) {
               values.push(input);
             }
           });
