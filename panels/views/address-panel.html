@@ -160,8 +160,7 @@
        data-name="zip"
        data-required="true"
     >
-    <input type="text" required="" id="{{addressType}}-AddrZip" name="addrZip" ng-model="address.zip"
-           placeholder="click to edit ... ">
+    <input type="text" required id="{{addressType}}-AddrZip" name="addrZip" ng-model="address.zip">
     <small ng-show="submitted && addressForm.addrZip.$error.required" class="error">
       This field is required.
     </small>
@@ -180,13 +179,10 @@
            id="{{addressType}}-AddrHomePhone"
            name="phone"
            ng-model="address.phone"
-           required
-           placeholder="click to edit ... ">
+           required>
     <small class="error" ng-show="address.errors.phone">
       {{ address.errors.phone }}
     </small>
   </div>
 
-
 </div>
-
