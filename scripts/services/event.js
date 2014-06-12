@@ -13,6 +13,19 @@ angular.module('2ViVe')
         this.data = angular.extend(this.data, data);
       };
 
+      Event.prototype.response = function(inviteeId, response, message) {
+        var event = this;
+        return $http.post('/api/v2/events/' + event.data.id + '/invitees/' + inviteeId + '/response', {
+          'response': response,
+          'message': message
+        }, {
+          transformResponse: camelCaselize,
+          transformRequest: function(data) {
+            return angular.toJson(dashlize(data));
+          }
+        });
+      };
+
       Event.prototype.totalInviteesNumber = function() {
         return this.data.yesCount + this.data.noCount + this.data.maybeCount + this.data.noReplyCount;
       };
