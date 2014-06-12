@@ -58,7 +58,7 @@ angular.module('2ViVe')
           'home-address': homeAddress,
           'shipping-address': shippingAddress,
           'billing-address': billingAddress,
-          'web-address': webAddress,
+          'website-address': webAddress,
           'line-items': lineItems,
           'role-code': roleCode ? roleCode : DEFAULT_REGISTRATION_ROLE_CODE
         }, {
@@ -93,7 +93,7 @@ angular.module('2ViVe')
           'shipping-method-id': shippingMethodId,
           'shipping-address': shippingAddress,
           'billing-address': billingAddress,
-          'web-address': webAddress,
+          'website-address': webAddress,
           'line-items': lineItems
         }, {
           transformResponse: camelCaselize,
