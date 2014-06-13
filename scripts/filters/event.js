@@ -5,7 +5,7 @@ angular
   .filter('responseIs', function() {
     return function(invitees, responseType) {
       return invitees && invitees.filter(function(invitee) {
-        return invitee.response === responseType;
+        return invitee.response.toUpperCase() === responseType.toUpperCase();
       });
     };
   });
