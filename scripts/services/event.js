@@ -15,11 +15,14 @@ angular.module('2ViVe')
 
       Event.prototype.edit = function(data, time) {
         processTime(data, time);
-        return $http.post('/api/v2/events/' + this.data.id, data, {
+        return $http.put('/api/v2/events/' + this.data.id, data, {
           transformResponse: camelCaselize,
           transformRequest: function(data) {
             return angular.toJson(dashlize(data));
           }
+        }).then(function(response) {
+          event.data = response.data.response;
+          return event;
         });
       };
 
