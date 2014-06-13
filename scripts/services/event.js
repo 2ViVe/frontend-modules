@@ -13,10 +13,10 @@ angular.module('2ViVe')
         this.data = angular.extend(this.data, data);
       };
 
-      Event.prototype.response = function(inviteeId, response, message) {
+      Event.prototype.response = function(inviteeId, response, comment) {
         return $http.post('/api/v2/events/' + this.data.id + '/invitees/' + inviteeId + '/response', {
           'response': response,
-          'message': message
+          'comment': comment
         }, {
           transformResponse: camelCaselize,
           transformRequest: function(data) {
@@ -51,6 +51,18 @@ angular.module('2ViVe')
           event.data = response.data.response;
           return event;
         });
+      };
+
+      Event.prototype.getInviteeById = function(inviteeId) {
+        var event = this;
+        var result = null;
+        angular.forEach(event.invitees, function(invitee) {
+          if (invitee.id === inviteeId) {
+            result = invitee;
+            return null;
+          }
+        });
+        return result;
       };
 
       Event.prototype.fetchInvitees = function() {
