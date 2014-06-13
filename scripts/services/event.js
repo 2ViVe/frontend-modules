@@ -13,6 +13,16 @@ angular.module('2ViVe')
         this.data = angular.extend(this.data, data);
       };
 
+      Event.prototype.edit = function(data, time) {
+        processTime(data, time);
+        return $http.post('/api/v2/events/' + this.data.id, data, {
+          transformResponse: camelCaselize,
+          transformRequest: function(data) {
+            return angular.toJson(dashlize(data));
+          }
+        });
+      };
+
       Event.prototype.response = function(inviteeId, response, comment) {
         return $http.post('/api/v2/events/' + this.data.id + '/invitees/' + inviteeId + '/response', {
           'response': response,
@@ -39,10 +49,36 @@ angular.module('2ViVe')
         });
       };
 
-      Event.prototype.create = function(eventData) {
+      function processTime(event, time) {
+        if (time.startDate && time.startTime) {
+          event.startTime = time.startDate + 'T' + time.startTime + ':00.000Z';
+        }
+        if (time.endDate && time.endTime) {
+          event.endTime = time.endDate + 'T' + time.endTime + ':00.000Z';
+        }
+        return event;
+      }
+
+      Event.prototype.getTime = function() {
+        var time = {};
+        var startTime = moment(this.data.startTime);
+        if (startTime.isValid()) {
+          time.startDate = startTime.format('YYYY-MM-DD');
+          time.startTime = startTime.format('HH:mm');
+        }
+        var endTime = moment(this.data.endTime);
+        if (endTime.isValid()) {
+          time.endDate = endTime.format('YYYY-MM-DD');
+          time.endTime = endTime.format('HH:mm');
+        }
+        return time;
+      };
+
+      Event.prototype.create = function(data, time) {
         var event = this;
-        eventData.userId = User.data.userId;
-        return $http.post('/api/v2/events', eventData, {
+        processTime(data, time);
+        data.userId = User.data.userId;
+        return $http.post('/api/v2/events', data, {
           transformResponse: camelCaselize,
           transformRequest: function(data) {
             return angular.toJson(dashlize(data));
