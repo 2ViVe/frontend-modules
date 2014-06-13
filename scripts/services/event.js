@@ -75,6 +75,18 @@ angular.module('2ViVe')
         });
       };
 
+      Event.prototype.getTemplateImageUrlFrom = function(templates) {
+        var templateImageUrl = null;
+        var event = this;
+        angular.forEach(templates, function(template) {
+          if (template.id === event.data.templateId) {
+            templateImageUrl = template.imageUrl;
+            return null;
+          }
+        });
+        return templateImageUrl;
+      };
+
       Event.prototype.addInvitees = function(invitees, subject, message) {
         return $http.post('/api/v2/events/' + this.data.id + '/invitees', {
           invitees: invitees,
