@@ -8,4 +8,11 @@ angular
         return invitee.response.toUpperCase() === responseType.toUpperCase();
       });
     };
+  })
+  .filter('responseIsNot', function() {
+    return function(invitees, responseType) {
+      return invitees && invitees.filter(function(invitee) {
+        return invitee.response.toUpperCase() !== responseType.toUpperCase();
+      });
+    };
   });
