@@ -23,12 +23,17 @@ angular.module('2ViVe')
             var images = element.find('img');
             images.hide();
             images.on('load', function() {
+
               images.show();
-              slider = angular.element(element).unslider({
-                dots: hasDots,
-                autoplay: isAutoPlay,
-                delay: delay
-              }).data('unslider');
+
+              if (slider === undefined) {
+                slider = angular.element(element).unslider({
+                  dots: hasDots,
+                  autoplay: isAutoPlay,
+                  delay: delay
+                }).data('unslider');
+              }
+
             });
           });
         }
