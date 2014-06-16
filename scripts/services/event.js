@@ -42,6 +42,14 @@ angular.module('2ViVe')
         return this.data.yesCount + this.data.noCount + this.data.maybeCount + this.data.noReplyCount;
       };
 
+      Event.prototype.remove = function() {
+        return $http
+          .delete('/api/v2/events/' + event.data.id)
+          .then(function(resp) {
+            return response.data.response;
+          });
+      };
+
       Event.prototype.fetch = function() {
         var event = this;
         return $http.get('/api/v2/events/' + event.data.id, {
