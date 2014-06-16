@@ -2,8 +2,8 @@
 
 angular
   .module('2ViVe')
-  .directive('sponsorValidator', ['Registration', '$timeout',
-    function (Registration) {
+  .directive('sponsorValidator', ['Registration', 'LocalStorage',
+    function (Registration, LocalStorage) {
       return {
         restrict: 'A',
         require: 'ngModel',
@@ -14,6 +14,12 @@ angular
         link: function (scope, element, attrs, ctrl) {
 
           var isInputting = false;
+
+          var replicateInfo = LocalStorage.getReplicateOwner();
+
+          if (replicateInfo) {
+            ctrl.$setViewValue(replicateInfo['distributor-id']);
+          }
 
           element.on('focus', function () {
             isInputting = true;
