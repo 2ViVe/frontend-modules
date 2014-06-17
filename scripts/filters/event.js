@@ -5,6 +5,9 @@ angular
   .filter('responseIs', function() {
     return function(invitees, responseType) {
       return invitees && invitees.filter(function(invitee) {
+        if (!invitee.response) {
+          return false;
+        }
         return invitee.response.toUpperCase() === responseType.toUpperCase();
       });
     };
@@ -12,6 +15,9 @@ angular
   .filter('responseIsNot', function() {
     return function(invitees, responseType) {
       return invitees && invitees.filter(function(invitee) {
+        if (!invitee.response) {
+          return false;
+        }
         return invitee.response.toUpperCase() !== responseType.toUpperCase();
       });
     };
