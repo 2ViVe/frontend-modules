@@ -51,9 +51,6 @@ angular.module('2ViVe')
               }
               return angular.toJson(dashlize(data));
             }
-          })
-          .then(function(resp) {
-            return response.data.response;
           });
       };
 
