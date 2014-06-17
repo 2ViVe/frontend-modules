@@ -44,7 +44,7 @@ angular.module('2ViVe')
 
       Event.prototype.remove = function() {
         return $http
-          .delete('/api/v2/events/' + event.data.id)
+          .delete('/api/v2/events/' + this.data.id)
           .then(function(resp) {
             return response.data.response;
           });
