@@ -42,9 +42,16 @@ angular.module('2ViVe')
         return this.data.yesCount + this.data.noCount + this.data.maybeCount + this.data.noReplyCount;
       };
 
-      Event.prototype.remove = function() {
+      Event.prototype.remove = function(notification) {
         return $http
-          .delete('/api/v2/events/' + this.data.id)
+          .delete('/api/v2/events/' + this.data.id, notification, {
+            transformRequest: function(data) {
+              if (!data) {
+                return;
+              }
+              return angular.toJson(dashlize(data));
+            }
+          })
           .then(function(resp) {
             return response.data.response;
           });
