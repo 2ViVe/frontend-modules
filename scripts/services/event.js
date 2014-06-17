@@ -68,23 +68,25 @@ angular.module('2ViVe')
       };
 
       function processTime(event, time) {
-        if (time.startDate && time.startTime) {
-          event.startTime = time.startDate + 'T' + time.startTime + ':00.000Z';
+        var start = moment(time.startDate + ' ' + time.startTime);
+        var end = moment(time.endDate + ' ' + time.endTime);
+        if (start.isValid()) {
+          event.startTime = start.utc().format();
         }
-        if (time.endDate && time.endTime) {
-          event.endTime = time.endDate + 'T' + time.endTime + ':00.000Z';
+        if (end.isValid()) {
+          event.endTime = end.utc().format();
         }
         return event;
       }
 
       Event.prototype.getTime = function() {
         var time = {};
-        var startTime = moment(this.data.startTime);
+        var startTime = moment(this.data.startTime).local();
         if (startTime.isValid()) {
           time.startDate = startTime.format('YYYY-MM-DD');
           time.startTime = startTime.format('HH:mm');
         }
-        var endTime = moment(this.data.endTime);
+        var endTime = moment(this.data.endTime).local();
         if (endTime.isValid()) {
           time.endDate = endTime.format('YYYY-MM-DD');
           time.endTime = endTime.format('HH:mm');
