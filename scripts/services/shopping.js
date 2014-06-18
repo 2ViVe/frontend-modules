@@ -24,17 +24,18 @@ angular.module('2ViVe')
             }
           });
           Shopping.items.splice(itemIndex, 1);
-          return Shopping.update();
+          return Shopping.updateItems();
         },
         processedItems: function() {
           var items = angular.copy(Shopping.items);
           angular.forEach(items, function(item) {
             delete item.data;
             delete item.retailPrice;
+            delete item.newQuantity;
           });
           return items;
         },
-        update: function() {
+        updateItems: function() {
           var url = User.isLogin ?
             '/api/v2/shopping-carts/users/line-items' :
             '/api/v2/shopping-carts/visitors/' + LocalStorage.getVisitorId() + '/line-items';
@@ -114,10 +115,10 @@ angular.module('2ViVe')
               $http.get('/api/v2/shopping-carts/users', {
                 transformResponse: CamelCaseLize
               }).then(function(response) {
-                  Shopping.items = response.data.response.lineItems;
-                  updateItemsWithVariantsData();
-                  deferred.resolve(Shopping);
-                });
+                Shopping.items = response.data.response.lineItems;
+                updateItemsWithVariantsData();
+                deferred.resolve(Shopping);
+              });
             } else if (LocalStorage.isVisitorIdSaved()) {
               $http.get('/api/v2/shopping-carts/visitors/' + LocalStorage.getVisitorId(), {
                 transformResponse: CamelCaseLize,
@@ -125,10 +126,10 @@ angular.module('2ViVe')
                   'role-code': DEFAULT_ROLE_CODE
                 }
               }).then(function(response) {
-                  Shopping.items = response.data.response.lineItems;
-                  updateItemsWithVariantsData();
-                  deferred.resolve(Shopping);
-                });
+                Shopping.items = response.data.response.lineItems;
+                updateItemsWithVariantsData();
+                deferred.resolve(Shopping);
+              });
             } else {
               $http.post('/api/v2/shopping-carts/visitors', {
                 'id': LocalStorage.createVisitorId(),
