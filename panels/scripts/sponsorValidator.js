@@ -2,8 +2,8 @@
 
 angular
   .module('2ViVe')
-  .directive('sponsorValidator', ['Registration', 'LocalStorage',
-    function (Registration, LocalStorage) {
+  .directive('sponsorValidator', ['Registration', 'LocalStorage', '$timeout',
+    function (Registration, LocalStorage, $timeout) {
       return {
         restrict: 'A',
         require: 'ngModel',
@@ -18,7 +18,10 @@ angular
           var replicateInfo = LocalStorage.getReplicateOwner();
 
           if (replicateInfo) {
-            ctrl.$setViewValue(replicateInfo['distributor-id']);
+            $timeout(function() {
+              element.val(replicateInfo['distributor-id']);
+              ctrl.$setViewValue(replicateInfo['distributor-id'], 'change');
+            });
           }
 
           element.on('focus', function () {
