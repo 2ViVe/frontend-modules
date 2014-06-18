@@ -4,11 +4,12 @@ angular
   .module('2ViVe')
   .filter('responseIs', function() {
     return function(invitees, responseType) {
+
       return invitees && invitees.filter(function(invitee) {
         if (!invitee.response) {
           return false;
         }
-        return invitee.response.toUpperCase() === responseType.toUpperCase();
+        return invitee.reply.toUpperCase() === responseType.toUpperCase();
       });
     };
   })
@@ -18,7 +19,7 @@ angular
         if (!invitee.response) {
           return false;
         }
-        return invitee.response.toUpperCase() !== responseType.toUpperCase();
+        return invitee.reply.toUpperCase() !== responseType.toUpperCase();
       });
     };
   });
