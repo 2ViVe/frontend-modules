@@ -4,6 +4,7 @@ angular.module('2ViVe')
   .factory('Shopping', ['$http', 'LocalStorage', 'User', '$location', 'Variant', '$q', 'DEFAULT_ROLE_CODE', 'CamelCaseLize', 'Dashlize',
     function($http, LocalStorage, User, $location, Variant, $q, DEFAULT_ROLE_CODE, CamelCaseLize, dashlize) {
       var Shopping = {
+        event: null,
         mergeItems: function() {
           return Shopping.addItems(Shopping.items);
         },
@@ -63,7 +64,10 @@ angular.module('2ViVe')
               'quantity': quantity,
               'catalog-code': catalogCode,
               'role-code': User.isLogin ? null : DEFAULT_ROLE_CODE,
-              'personalized-values': personalizedValues
+              'personalized-values': personalizedValues,
+              'optional-fields': {
+                'event-id': Shopping.event ? Shopping.event.id : undefined
+              }
             }
           ]).success(function(data) {
             Shopping.items = data.response;
