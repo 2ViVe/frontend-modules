@@ -70,9 +70,8 @@ angular.module('2ViVe')
           return currentShippingMethod;
         },
         checkout: function(shopping) {
-          var lineItems = shopping.lineItems;
           return $http.post('/api/v2/orders/checkout', {
-            'line-items': lineItems,
+            'line-items': shopping.items,
             'optional-fields': shopping.optionalFields
           }, {
             transformResponse: CamelCaseLize,
@@ -82,13 +81,6 @@ angular.module('2ViVe')
           }).then(function(response) {
             Order.data = response.data.response;
             Order.data.optionalFields = shopping.optionalFields;
-            angular.forEach(Order.data.lineItems, function(lineItem) {
-              angular.forEach(lineItems, function(lineItemInShoppingCart) {
-                if (lineItem.variantId === lineItemInShoppingCart.variantId) {
-                  lineItem.personalizedValues = lineItemInShoppingCart.personalizedValues;
-                }
-              });
-            });
             return Order;
           });
         },
