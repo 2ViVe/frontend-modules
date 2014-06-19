@@ -9,8 +9,9 @@ angular.module('2ViVe')
           Shopping.optionalFields = angular.extend(Shopping.optionalFields ? Shopping.optionalFields : {}, options);
         },
         removeOptionalField: function(key) {
-          if (Shopping.optionalFields[key]) {
-            delete Shopping.optionalFields[key];
+          var optionalFields = Shopping.optionalFields;
+          if (optionalFields && optionalFields[key]) {
+            delete optionalFields[key];
           }
         },
         mergeItems: function() {
