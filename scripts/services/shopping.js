@@ -6,7 +6,7 @@ angular.module('2ViVe')
       var Shopping = {
         optionalFields: undefined,
         addOptionalFields: function(options) {
-          Shopping.optionalFields = angular.extend(Shopping.optionalFields, options);
+          Shopping.optionalFields = angular.extend(Shopping.optionalFields ? Shopping.optionalFields : {}, options);
         },
         removeOptionalField: function(key) {
           if (Shopping.optionalFields[key]) {
@@ -105,10 +105,7 @@ angular.module('2ViVe')
             '/api/v2/shopping-carts/users' :
             '/api/v2/shopping-carts/visitors/' + LocalStorage.getVisitorId();
           return $http.delete(url, {
-            transformResponse: CamelCaseLize,
-            transformRequest: function(data) {
-              return angular.toJson(dashlize(data));
-            }
+            transformResponse: CamelCaseLize
           }).success(function() {
             Shopping.items = [];
           });
