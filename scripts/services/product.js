@@ -17,7 +17,21 @@ angular.module('2ViVe')
                 'catalog-code': catalogCode
               }
             }).then(function(response) {
-              deferred.resolve(response.data.response);
+              var data = response.data.response;
+              angular.forEach(data.products, function(product) {
+                var outOfStockLength = 0, comingSoonLength = 0;
+                angular.forEach(product.variants, function(variant) {
+                  if (variant.countOnHand <= 0) {
+                    outOfStockLength++;
+                  }
+                  if (moment(variant.availableOn).isAfter()) {
+                    comingSoonLength++;
+                  }
+                });
+                product.isOutOfStock = outOfStockLength === product.variants.length;
+                product.isComingSoon = comingSoonLength === product.variants.length;
+              });
+              deferred.resolve(data);
             }).catch(function(error) {
               if (error.status === 400) {
                 UrlHandler.goToRetailSite('/signin');
@@ -28,7 +42,7 @@ angular.module('2ViVe')
 
           return deferred.promise;
         },
-        getByCatalog : function(catalogCode){
+        getByCatalog: function(catalogCode) {
           var deferred = $q.defer();
 
           User.fetch().finally(function() {
