@@ -14,7 +14,7 @@ angular.module('2ViVe')
           }
         },
         mergeItems: function() {
-          return Shopping.addItems(Shopping.items);
+          return Shopping.addItems(Shopping.processedItems());
         },
         checkout: function() {
           $location.path('/checkout');
@@ -88,7 +88,6 @@ angular.module('2ViVe')
               'variant-id': variant.id,
               'quantity': quantity,
               'catalog-code': catalogCode,
-              'role-code': User.isLogin ? null : DEFAULT_ROLE_CODE,
               'personalized-values': personalizedValues
             }
           ], {
@@ -152,20 +151,15 @@ angular.module('2ViVe')
                 deferred.resolve(Shopping);
               });
             } else if (LocalStorage.isVisitorIdSaved()) {
-              $http.get('/api/v2/shopping-carts/visitors/' + LocalStorage.getVisitorId(), {
-                transformResponse: CamelCaseLize,
-                params: {
-                  'role-code': DEFAULT_ROLE_CODE
-                }
-              }).then(function(response) {
-                Shopping.items = response.data.response.lineItems;
-                updateItemsWithVariantsData();
-                deferred.resolve(Shopping);
-              });
+              $http.get('/api/v2/shopping-carts/visitors/' + LocalStorage.getVisitorId())
+                .then(function(response) {
+                  Shopping.items = response.data.response.lineItems;
+                  updateItemsWithVariantsData();
+                  deferred.resolve(Shopping);
+                });
             } else {
               $http.post('/api/v2/shopping-carts/visitors', {
-                'id': LocalStorage.createVisitorId(),
-                'role-code': DEFAULT_ROLE_CODE
+                'id': LocalStorage.createVisitorId()
               }, {
                 transformResponse: CamelCaseLize,
                 transformRequest: function(data) {
