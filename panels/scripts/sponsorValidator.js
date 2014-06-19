@@ -17,7 +17,7 @@ angular
 
           var replicateInfo = LocalStorage.getReplicateOwner();
 
-          if (replicateInfo) {
+          if (replicateInfo && replicateInfo['role-code'] === 'D') {
             $timeout(function() {
               element.val(replicateInfo['distributor-id']);
               ctrl.$setViewValue(replicateInfo['distributor-id'], 'change');
