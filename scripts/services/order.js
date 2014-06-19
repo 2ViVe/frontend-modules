@@ -104,7 +104,18 @@ angular.module('2ViVe')
             Order.data.adjustments = data.response;
           });
         },
-        create: function(paymentMethodId, shippingMethodId, creditCard) {
+        create: function(paymentMethodId, shippingMethodId, creditCard, orderId) {
+          if (orderId) {
+            return $http.post('/api/v2/orders/' + orderId + '/payments', {
+              'payment-method-id': paymentMethodId,
+              'creditcard': creditCard
+            }, {
+              transformResponse: CamelCaseLize,
+              transformRequest: function(data) {
+                return angular.toJson(dashlize(data));
+              }
+            });
+          }
           return $http.post('/api/v2/orders', {
             'payment-method-id': paymentMethodId,
             'shipping-method-id': shippingMethodId,
