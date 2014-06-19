@@ -118,6 +118,18 @@ angular.module('2ViVe')
               return angular.toJson(dashlize(data));
             }
           });
+        },
+        update: function(paymentId, paymentMethodId, creditCard) {
+          return $http.post('/api/v2/orders/' + paymentId + '/payments', {
+            'payment-id': paymentId,
+            'payment-method-id': paymentMethodId,
+            'creditcard': creditCard
+          }, {
+            transformResponse: CamelCaseLize,
+            transformRequest: function(data) {
+              return angular.toJson(dashlize(data));
+            }
+          });
         }
       };
       return Order;
