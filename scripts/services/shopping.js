@@ -147,6 +147,7 @@ angular.module('2ViVe')
                 transformResponse: CamelCaseLize
               }).then(function(response) {
                 Shopping.items = response.data.response.lineItems;
+                Shopping.optionalFields = response.data.response.optionalFields;
                 updateItemsWithVariantsData();
                 deferred.resolve(Shopping);
               });
@@ -154,6 +155,7 @@ angular.module('2ViVe')
               $http.get('/api/v2/shopping-carts/visitors/' + LocalStorage.getVisitorId())
                 .then(function(response) {
                   Shopping.items = response.data.response.lineItems;
+                  Shopping.optionalFields = response.data.response.optionalFields;
                   updateItemsWithVariantsData();
                   deferred.resolve(Shopping);
                 });
@@ -167,6 +169,7 @@ angular.module('2ViVe')
                 }
               }).then(function(response) {
                 Shopping.items = response.data.response.lineItems;
+                Shopping.optionalFields = response.data.response.optionalFields;
                 updateItemsWithVariantsData();
                 deferred.resolve(Shopping);
               });
