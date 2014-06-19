@@ -69,9 +69,10 @@ angular.module('2ViVe')
           });
           return currentShippingMethod;
         },
-        checkout: function(lineItems) {
+        checkout: function(shopping) {
           return $http.post('/api/v2/orders/checkout', {
-            'line-items': lineItems
+            'line-items': shopping.items,
+            'optional-fields': shopping.optionalFields
           }, {
             transformResponse: CamelCaseLize,
             transformRequest: function(data) {
@@ -79,13 +80,7 @@ angular.module('2ViVe')
             }
           }).then(function(response) {
             Order.data = response.data.response;
-            angular.forEach(Order.data.lineItems, function(lineItem) {
-              angular.forEach(lineItems, function(lineItemInShoppingCart) {
-                if (lineItem.variantId == lineItemInShoppingCart.variantId) {
-                  lineItem.personalizedValues = lineItemInShoppingCart.personalizedValues;
-                }
-              });
-            });
+            Order.data.optionalFields = shopping.optionalFields;
             return Order;
           });
         },
@@ -104,14 +99,26 @@ angular.module('2ViVe')
             Order.data.adjustments = data.response;
           });
         },
-        create: function(paymentMethodId, shippingMethodId, creditCard) {
+        create: function(paymentMethodId, shippingMethodId, creditCard, orderId) {
+          if (orderId) {
+            return $http.post('/api/v2/orders/' + orderId + '/payments', {
+              'payment-method-id': paymentMethodId,
+              'creditcard': creditCard
+            }, {
+              transformResponse: CamelCaseLize,
+              transformRequest: function(data) {
+                return angular.toJson(dashlize(data));
+              }
+            });
+          }
           return $http.post('/api/v2/orders', {
             'payment-method-id': paymentMethodId,
             'shipping-method-id': shippingMethodId,
             'creditcard': creditCard,
             'shipping-address': Order.data.shippingAddress,
             'billing-address': Order.data.billingAddress,
-            'line-items': Order.data.lineItems
+            'line-items': Order.data.lineItems,
+            'optional-fields': Order.data.optionalFields
           }, {
             transformResponse: CamelCaseLize,
             transformRequest: function(data) {

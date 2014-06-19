@@ -4,9 +4,17 @@ angular.module('2ViVe')
   .factory('Shopping', ['$http', 'LocalStorage', 'User', '$location', 'Variant', '$q', 'DEFAULT_ROLE_CODE', 'CamelCaseLize', 'Dashlize',
     function($http, LocalStorage, User, $location, Variant, $q, DEFAULT_ROLE_CODE, CamelCaseLize, dashlize) {
       var Shopping = {
-        event: null,
+        optionalFields: undefined,
+        addOptionalFields: function(options) {
+          Shopping.optionalFields = angular.extend(Shopping.optionalFields ? Shopping.optionalFields : {}, options);
+        },
+        removeOptionalField: function(key) {
+          if (Shopping.optionalFields[key]) {
+            delete Shopping.optionalFields[key];
+          }
+        },
         mergeItems: function() {
-          return Shopping.addItems(Shopping.items);
+          return Shopping.addItems(Shopping.processedItems());
         },
         checkout: function() {
           $location.path('/checkout');
@@ -35,11 +43,23 @@ angular.module('2ViVe')
           });
           return items;
         },
+        update: function() {
+          return $http.post('/api/v2/shopping-carts/users', {
+            'line-items': Shopping.processedItems(),
+            'optional-fields': Shopping.optionalFields
+          }, {
+            transformResponse: CamelCaseLize,
+            transformRequest: function(data) {
+              return angular.toJson(dashlize(data));
+            }
+          });
+        },
         updateItems: function() {
           var url = User.isLogin ?
             '/api/v2/shopping-carts/users/line-items' :
             '/api/v2/shopping-carts/visitors/' + LocalStorage.getVisitorId() + '/line-items';
           return $http.put(url, Shopping.processedItems(), {
+            transformResponse: CamelCaseLize,
             transformRequest: function(data) {
               return angular.toJson(dashlize(data));
             }
@@ -49,10 +69,14 @@ angular.module('2ViVe')
           var url = User.isLogin ?
             '/api/v2/shopping-carts/users/line-items' :
             '/api/v2/shopping-carts/visitors/' + LocalStorage.getVisitorId() + '/line-items';
-          return $http.post(url, items)
-            .success(function(data) {
-              Shopping.items = data.response;
-            });
+          return $http.post(url, items, {
+            transformResponse: CamelCaseLize,
+            transformRequest: function(data) {
+              return angular.toJson(dashlize(data));
+            }
+          }).success(function(data) {
+            Shopping.items = data.response;
+          });
         },
         add: function(variant, quantity, catalogCode, personalizedValues) {
           var url = User.isLogin ?
@@ -64,13 +88,14 @@ angular.module('2ViVe')
               'variant-id': variant.id,
               'quantity': quantity,
               'catalog-code': catalogCode,
-              'role-code': User.isLogin ? null : DEFAULT_ROLE_CODE,
-              'personalized-values': personalizedValues,
-              'optional-fields': {
-                'event-id': Shopping.event ? Shopping.event.id : undefined
-              }
+              'personalized-values': personalizedValues
             }
-          ]).success(function(data) {
+          ], {
+            transformResponse: CamelCaseLize,
+            transformRequest: function(data) {
+              return angular.toJson(dashlize(data));
+            }
+          }).success(function(data) {
             Shopping.items = data.response;
           });
         },
@@ -78,17 +103,23 @@ angular.module('2ViVe')
           var url = User.isLogin ?
             '/api/v2/shopping-carts/users' :
             '/api/v2/shopping-carts/visitors/' + LocalStorage.getVisitorId();
-          return $http.delete(url)
-            .success(function() {
-              Shopping.items = [];
-            });
+          return $http.delete(url, {
+            transformResponse: CamelCaseLize
+          }).success(function() {
+            Shopping.items = [];
+          });
         },
         empty: function() {
           var url = User.isLogin ?
             '/api/v2/shopping-carts/users/line-items' :
             '/api/v2/shopping-carts/visitors/' + LocalStorage.getVisitorId() + '/line-items';
 
-          return $http.put(url, [])
+          return $http.put(url, [], {
+            transformResponse: CamelCaseLize,
+            transformRequest: function(data) {
+              return angular.toJson(dashlize(data));
+            }
+          })
             .success(function(data) {
               Shopping.items = data.response;
             });
@@ -116,24 +147,21 @@ angular.module('2ViVe')
                 transformResponse: CamelCaseLize
               }).then(function(response) {
                 Shopping.items = response.data.response.lineItems;
+                Shopping.optionalFields = response.data.response.optionalFields;
                 updateItemsWithVariantsData();
                 deferred.resolve(Shopping);
               });
             } else if (LocalStorage.isVisitorIdSaved()) {
-              $http.get('/api/v2/shopping-carts/visitors/' + LocalStorage.getVisitorId(), {
-                transformResponse: CamelCaseLize,
-                params: {
-                  'role-code': DEFAULT_ROLE_CODE
-                }
-              }).then(function(response) {
-                Shopping.items = response.data.response.lineItems;
-                updateItemsWithVariantsData();
-                deferred.resolve(Shopping);
-              });
+              $http.get('/api/v2/shopping-carts/visitors/' + LocalStorage.getVisitorId())
+                .then(function(response) {
+                  Shopping.items = response.data.response.lineItems;
+                  Shopping.optionalFields = response.data.response.optionalFields;
+                  updateItemsWithVariantsData();
+                  deferred.resolve(Shopping);
+                });
             } else {
               $http.post('/api/v2/shopping-carts/visitors', {
-                'id': LocalStorage.createVisitorId(),
-                'role-code': DEFAULT_ROLE_CODE
+                'id': LocalStorage.createVisitorId()
               }, {
                 transformResponse: CamelCaseLize,
                 transformRequest: function(data) {
@@ -141,6 +169,7 @@ angular.module('2ViVe')
                 }
               }).then(function(response) {
                 Shopping.items = response.data.response.lineItems;
+                Shopping.optionalFields = response.data.response.optionalFields;
                 updateItemsWithVariantsData();
                 deferred.resolve(Shopping);
               });
