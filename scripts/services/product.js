@@ -21,7 +21,7 @@ angular.module('2ViVe')
               angular.forEach(data.products, function(product) {
                 var outOfStockLength = 0, comingSoonLength = 0;
                 angular.forEach(product.variants, function(variant) {
-                  if (isNaN(variant.countOnHand) || variant.countOnHand <= 0) {
+                  if (variant.countOnHand < 0) {
                     outOfStockLength++;
                   }
                   if (moment(variant.availableOn).isAfter()) {
@@ -113,7 +113,7 @@ angular.module('2ViVe')
             product.data.description = $sce.trustAsHtml(product.data.description);
             product.options = {};
             angular.forEach(product.data.variants, function(variant) {
-              variant.isOutOfStock = isNaN(variant.countOnHand) || variant.countOnHand <= 0;
+              variant.isOutOfStock = variant.countOnHand < 0;
               variant.isComingSoon = moment(variant.availableOn).isAfter();
 
               angular.forEach(variant.options, function(option) {
