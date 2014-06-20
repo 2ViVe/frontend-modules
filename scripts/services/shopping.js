@@ -153,8 +153,9 @@ angular.module('2ViVe')
                 deferred.resolve(Shopping);
               });
             } else if (LocalStorage.isVisitorIdSaved()) {
-              $http.get('/api/v2/shopping-carts/visitors/' + LocalStorage.getVisitorId())
-                .then(function(response) {
+              $http.get('/api/v2/shopping-carts/visitors/' + LocalStorage.getVisitorId(), {
+                transformResponse: CamelCaseLize
+              }).then(function(response) {
                   Shopping.items = response.data.response.lineItems;
                   Shopping.optionalFields = response.data.response.optionalFields;
                   updateItemsWithVariantsData();
