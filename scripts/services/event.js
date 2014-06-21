@@ -177,6 +177,17 @@ angular.module('2ViVe')
           });
         },
 
+        fetchByUserId: function(userId) {
+          return $http.get('/api/v2/events', {
+            transformResponse: camelCaselize,
+            params: {
+              'user-id': userId
+            }
+          }).then(function(response) {
+            return response.data.response;
+          });
+        },
+
         fetchAll: function() {
           return $http.get('/api/v2/events', {
             transformResponse: camelCaselize
