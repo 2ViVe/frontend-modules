@@ -18,7 +18,6 @@ angular
             controller: 'HandlerLocateModalController'
           }).result.then(function(result){
               $scope.account.sponsor = result.distributorId;
-              console.log(result);
             });
         };
       }]
