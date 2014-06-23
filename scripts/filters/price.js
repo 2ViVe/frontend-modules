@@ -6,9 +6,10 @@ angular.module('2ViVe')
       if (isNaN(price)) {
         return '--';
       }
+      var currencySymbol = CURRENCY_SYMBOL;
       if (options === 'with out currency') {
-        CURRENCY_SYMBOL = '';
+        currencySymbol = '';
       }
-      return CURRENCY_SYMBOL + parseFloat(Math.round(price * 100) / 100).toFixed(2);
+      return currencySymbol + parseFloat(Math.round(price * 100) / 100).toFixed(2);
     };
   }]);
