@@ -38,10 +38,12 @@ angular.module('2ViVe')
         });
       };
 
-      Event.prototype.ordersTotal = function() {
+      Event.prototype.ordersItemTotal = function() {
         var total = 0;
         angular.forEach(this.orders, function(order) {
-          total += order.total;
+          if (order.state === 'complete' && order.paymentState === 'paid') {
+            total += order.itemTotal;
+          }
         });
         return total;
       };
