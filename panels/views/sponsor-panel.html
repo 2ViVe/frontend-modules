@@ -10,7 +10,7 @@
     <div class="small-4 columns">
       <label class="inline" ng-class="{required: required}" for="sponsor">Sponsor ID</label>
     </div>
-    <div class="small-8 end columns">
+    <div class="small-6 end columns">
       <input type="text"
              id="sponsor" name="sponsor"
              ng-required="{{required}}"
@@ -18,7 +18,7 @@
              data-sponsor-validator
              data-sponsor-name="sponsorName"
              data-sponsor-validator-error-msg="$errorMessages['sponsor']"
-              />
+        />
 
       <small ng-show="sponsorForm.sponsor.$error.sponsorError" class="error">
         {{ $errorMessages.sponsor }}
@@ -26,6 +26,9 @@
       <small ng-show="submitted && sponsorForm.sponsor.$error.required" class="error">
         This field is required.
       </small>
+    </div>
+    <div small-2 columns>
+      <a ng-click="searchHandler()" class="button tiny">handler search</a>
     </div>
 
     <div class="small-4 columns input-description unimportant-text" ng-show="sponsorName">
