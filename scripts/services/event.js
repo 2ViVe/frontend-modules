@@ -38,6 +38,18 @@ angular.module('2ViVe')
         });
       };
 
+      Event.prototype.ordersTotal = function() {
+        var total = 0;
+        angular.forEach(this.orders, function(order) {
+          total += order.total;
+        });
+        return total;
+      };
+
+      Event.prototype.totalOrdersNumber = function() {
+        return this.orders ? this.orders.length : 0;
+      };
+
       Event.prototype.totalInviteesNumber = function() {
         return this.data.yesCount + this.data.noCount + this.data.maybeCount + this.data.noReplyCount;
       };
@@ -60,6 +72,16 @@ angular.module('2ViVe')
           transformResponse: camelCaselize
         }).then(function(response) {
           event.data = response.data.response;
+          return event;
+        });
+      };
+
+      Event.prototype.fetchOrders = function() {
+        var event = this;
+        return $http.get('/api/v2/events/' + event.data.id + '/orders', {
+          transformResponse: camelCaselize
+        }).then(function(response) {
+          event.orders = response.data.response;
           return event;
         });
       };
