@@ -28,6 +28,10 @@ angular
     $scope.submit = function(){
       Handlers.fetch($scope.input.microchipId, $scope.input.firstName, $scope.input.lastName).then(function(results){
         $scope.results = results;
+        $scope.errorMessage = '';
+        if (results.length == 0){
+          $scope.errorMessage = 'Handler Not Found';
+        }
       });
 
     };
