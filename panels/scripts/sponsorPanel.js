@@ -47,6 +47,9 @@ angular
     $scope.cancel = function() {
       $modalInstance.dismiss('cancel');
     };
+    $scope.direct = function(handler){
+      window.location.href = '/' + handler.login;
+    };
     $scope.results = [];
     $scope.targetHandler = '';
   }]);
