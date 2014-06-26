@@ -1,0 +1,12 @@
+<ul class="pagination">
+  <li class="arrow" ng-class="{'unavailable': currentPage === 1}">
+    <a ng-click="previousPage()">&laquo;</a>
+  </li>
+  <li ng-repeat="page in pages"
+      ng-class="{'unavailable': page === currentPage}">
+    <a ng-click="goTo(page)">{{page}}</a>
+  </li>
+  <li class="arrow" ng-class="{'unavailable': currentPage === pageNumber}">
+    <a ng-click="nextPage()">&raquo;</a>
+  </li>
+</ul>
