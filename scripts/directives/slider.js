@@ -89,6 +89,8 @@ angular.module('2ViVe')
             options[key] = true;
           } else if (optionValue === 'false') {
             options[key] = false;
+          } else if (!isNaN(optionValue)) {
+            options[key] = Number(optionValue);
           } else {
             options[key] = optionValue;
           }
