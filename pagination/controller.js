@@ -6,7 +6,7 @@ angular.module('2ViVe')
       restrict: 'E',
       templateUrl: function(element, attr) {
         var templateUrl = attr.templateUrl;
-        return templateUrl ? templateUrl : 'bower_components/2ViVe/pagination/views.html';
+        return templateUrl ? templateUrl : 'bower_components/2ViVe/pagination/view.html';
       },
       scope: {
         numberPerPage: '=',
