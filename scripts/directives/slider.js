@@ -65,7 +65,8 @@ angular.module('2ViVe')
         minSlides: '@',
         maxSlides: '@',
         pager: '@',
-        controls: '@'
+        controls: '@',
+        infiniteLoop: '@'
       },
       link: function(scope, element) {
         function initSlider() {
@@ -80,7 +81,7 @@ angular.module('2ViVe')
         }
 
         var slider;
-        var optionKeys = ['slideWidth', 'minSlides', 'maxSlides', 'pager', 'controls'];
+        var optionKeys = ['slideWidth', 'minSlides', 'maxSlides', 'pager', 'controls', 'infiniteLoop'];
         var options = {};
         angular.forEach(optionKeys, function(key) {
           var optionValue = scope[key];
