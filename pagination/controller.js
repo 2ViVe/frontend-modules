@@ -9,6 +9,7 @@ angular.module('2ViVe')
         return templateUrl ? templateUrl : 'bower_components/2ViVe/pagination/view.html';
       },
       scope: {
+        hidePageNumber: '@',
         numberPerPage: '=',
         currentPage: '=',
         total: '=',
