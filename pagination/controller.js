@@ -11,7 +11,8 @@ angular.module('2ViVe')
       scope: {
         hidePageNumber: '@',
         numberPerPage: '=',
-        currentPage: '=',
+        startPage: '@',
+        refresh: '=',
         total: '=',
         onNextPage: '=',
         onPreviousPage: '=',
@@ -19,8 +20,14 @@ angular.module('2ViVe')
         templateUrl: '@'
       },
       controller: ['$scope', function($scope) {
-        function calculatePage(total) {
+        function refresh(total) {
           $scope.pageNumber = Math.ceil(total / $scope.numberPerPage);
+          if ($scope.startPage === 'first') {
+            $scope.currentPage = 1;
+          } else if ($scope.startPage === 'last') {
+            $scope.currentPage = $scope.pageNumber;
+            $scope.onGoToPage($scope.pageNumber);
+          }
 
           $scope.pages = [];
           for (var i = 1; i <= $scope.pageNumber; i++) {
@@ -28,7 +35,11 @@ angular.module('2ViVe')
           }
         }
 
-        $scope.$watch('total', calculatePage);
+        $scope.refresh = refresh;
+        if ($scope.startPage === undefined) {
+          $scope.startPage = 'first';
+        }
+        refresh($scope.total);
 
         $scope.goTo = function(page) {
           $scope.currentPage = page;
