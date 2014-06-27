@@ -49,14 +49,14 @@ angular.module('2ViVe')
         $scope.previousPage = function() {
           if ($scope.currentPage > 1) {
             $scope.currentPage--;
-            $scope.onPreviousPage();
+            $scope.onPreviousPage($scope.currentPage);
           }
         };
 
         $scope.nextPage = function() {
           if ($scope.currentPage < $scope.pageNumber) {
             $scope.currentPage++;
-            $scope.onNextPage();
+            $scope.onNextPage($scope.currentPage);
           }
         };
       }]
