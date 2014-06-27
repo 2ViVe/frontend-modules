@@ -3,7 +3,7 @@
     <a ng-click="previousPage()">&laquo;</a>
   </li>
   <li ng-hide="hidePageNumber === 'true'" ng-repeat="page in pages"
-      ng-class="{'unavailable': page === currentPage}">
+      ng-class="{'current': page === currentPage}">
     <a ng-click="goTo(page)">{{page}}</a>
   </li>
   <li class="arrow" ng-class="{'unavailable': currentPage === pageNumber}">
