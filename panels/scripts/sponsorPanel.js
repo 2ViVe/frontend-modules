@@ -8,7 +8,8 @@ angular
       scope: {
         account: '=',
         submitted: '=',
-        required: '@'
+        required: '@',
+        noSearchHandler: '='
       },
       controller: ['$scope', '$modal', function($scope, $modal) {
         $scope.$errorMessages = {};
