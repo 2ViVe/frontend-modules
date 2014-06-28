@@ -4,12 +4,19 @@ angular
   .module('2ViVe')
   .directive('sponsorPanel', [function() {
     return {
-      templateUrl: 'bower_components/2ViVe/panels/views/sponsor-panel.html',
+      templateUrl: function(el, attr) {
+        var tpl = 'bower_components/2ViVe/panels/views/sponsor-panel.html';
+
+        if (attr.tpl) {
+          tpl = attr.tpl;
+        }
+
+        return tpl;
+      },
       scope: {
         account: '=',
         submitted: '=',
-        required: '@',
-        noSearchHandler: '='
+        required: '@'
       },
       controller: ['$scope', '$modal', function($scope, $modal) {
         $scope.$errorMessages = {};
