@@ -20,6 +20,10 @@
              data-sponsor-validator-error-msg="$errorMessages['sponsor']"
         />
 
+      <div ng-if="noSearchHandler" ng-show="sponsorName" class="small-4 columns input-description unimportant-text" >
+        Sponsor Name: {{ sponsorName }}
+      </div>
+
       <small ng-show="sponsorForm.sponsor.$error.sponsorError" class="error">
         {{ $errorMessages.sponsor }}
       </small>
@@ -27,7 +31,7 @@
         This field is required.
       </small>
 
-      <div class="input-description unimportant-text" ng-show="sponsorName">
+      <div class="input-description unimportant-text" ng-show="sponsorName" ng-if="!noSearchHandler">
         Sponsor Name: {{ sponsorName }}
       </div>
     </div>
