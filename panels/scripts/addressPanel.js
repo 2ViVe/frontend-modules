@@ -12,7 +12,9 @@ angular
         if (type === 'website') {
           filename = 'web-' + filename;
         }
-        return 'bower_components/2ViVe/panels/views/' + filename;
+
+
+        return 'bower_components/2ViVe/panels/views/' + filename || attr.tpl;
       },
       controller: 'AddressPanelCtrl',
       controllerAs: 'panel',
