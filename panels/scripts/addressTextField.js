@@ -6,7 +6,9 @@ angular
     return {
       require: '^form',
       replace: true,
-      templateUrl: 'bower_components/2ViVe/panels/views/address-text-field.html',
+      templateUrl: function(el, attr) {
+        return attr.tpl || 'bower_components/2ViVe/panels/views/address-text-field.html';
+      },
       transclude: true,
       scope: {
         addressType: '&',
