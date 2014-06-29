@@ -4,7 +4,9 @@ angular
   .module('2ViVe')
   .directive('personalPanel', [function() {
     return {
-      templateUrl: 'bower_components/2ViVe/panels/views/personal-panel.html',
+      templateUrl: function(el, attr) {
+        return attr.tpl || 'bower_components/2ViVe/panels/views/personal-panel.html';
+      },
       scope: {
         account: '=',
         submitted: '='
