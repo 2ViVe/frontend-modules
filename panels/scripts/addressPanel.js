@@ -14,7 +14,7 @@ angular
         }
 
 
-        return 'bower_components/2ViVe/panels/views/' + filename || attr.tpl;
+        return attr.tpl || 'bower_components/2ViVe/panels/views/' + filename;
       },
       controller: 'AddressPanelCtrl',
       controllerAs: 'panel',
