@@ -9,7 +9,7 @@
   "dependencies": {
     "angular": "1.2.6",
     "moment": "~2.6.0",
-    "pikaday": "~1.2.0"
+    "pikaday": "git@github.com:zation/Pikaday.git#master"
   },
   "private": true,
   "ignore": [
