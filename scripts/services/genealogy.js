@@ -3,7 +3,9 @@
 angular.module('2ViVe')
   .factory('Genealogy', ['$http', 'CamelCaseLize',
     function($http, camelCaseLize) {
-      var Genealogy = function() {
+      var _rankMap;
+      var Genealogy = function(rankMap) {
+        _rankMap = rankMap;
       };
 
       Genealogy.prototype.fetchPath = function(distributorId) {
@@ -38,6 +40,10 @@ angular.module('2ViVe')
             genealogy.rootId = data.id;
           }
           genealogy.data = data;
+          genealogy.data.displayRank = _rankMap[genealogy.data.lifetimeRank];
+          angular.forEach(genealogy.data.children, function(child) {
+            child.displayRank = _rankMap[child.lifetimeRank];
+          });
           return genealogy;
         });
       };
