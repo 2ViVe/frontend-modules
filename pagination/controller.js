@@ -19,7 +19,7 @@ angular.module('2ViVe')
         onGoToPage: '=',
         templateUrl: '@'
       },
-      controller: ['$scope', function($scope) {
+      controller: ['$scope', '$attrs', function($scope, $attrs) {
         function refresh(total) {
           $scope.pageNumber = Math.ceil(total / $scope.numberPerPage);
           if ($scope.startPage === 'first') {
@@ -35,7 +35,10 @@ angular.module('2ViVe')
           }
         }
 
-        $scope.refresh = refresh;
+        if ($attrs.refresh !== undefined) {
+          $scope.refresh = refresh;
+        }
+
         if ($scope.startPage === undefined) {
           $scope.startPage = 'first';
         }
