@@ -42,6 +42,34 @@ angular.module('2ViVe')
 
           return deferred.promise;
         },
+        fetch: function(options) {
+          var deferred = $q.defer();
+
+          User.fetch().finally(function() {
+            $http.get('/api/v2/products', {
+              transformResponse: CamelCaseLize,
+              cache: true,
+              params: {
+                'role-code': User.isLogin ? undefined : DEFAULT_ROLE_CODE,
+                'country-id': User.isLogin ? undefined : DEFAULT_COUNTRY_ID,
+                'catalog-code': options.catalogCode,
+                'sortby': options.sortBy,
+                'q': options.q,
+                'offset': options.offset,
+                'limit': options.limit
+              }
+            }).then(function(response) {
+              deferred.resolve(response.data.response);
+            }).catch(function(error) {
+              if (error.status === 400) {
+                UrlHandler.goToRetailSite('/signin');
+              }
+              deferred.reject(error);
+            });
+          });
+
+          return deferred.promise;
+        },
         getByCatalog: function(catalogCode) {
           var deferred = $q.defer();
 
