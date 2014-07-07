@@ -31,7 +31,7 @@ angular
       }]
     };
   }])
-  .controller('HandlerLocateModalController', ['$scope', '$location', 'Handlers', '$modalInstance', function($scope, $location, Handlers, $modalInstance) {
+  .controller('HandlerLocateModalController', ['$scope', '$location', 'Handlers', '$modalInstance', 'Registration.Countries', function($scope, $location, Handlers, $modalInstance, Countries) {
     $scope.input = {};
     $scope.submit = function(){
       Handlers.fetch($scope.input.microchipId, $scope.input.firstName, $scope.input.lastName).then(function(results){
@@ -54,6 +54,13 @@ angular
     };
     $scope.cancel = function() {
       $modalInstance.dismiss('cancel');
+    };
+    Countries.fetch().then(function(countries) {
+      $scope.countries = countries.data;
+    });
+
+    $scope.changeState = function(){
+      $scope.states = $scope.country.states;
     };
     $scope.direct = function(handler){
       $modalInstance.close(handler);

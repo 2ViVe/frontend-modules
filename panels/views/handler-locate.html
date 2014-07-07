@@ -41,6 +41,32 @@
       <input type="text" ng-model='input.lastName' />
     </div>
   </div>
+  <div class='row'>
+    <div class='small-4 columns'>
+      <label class="inline">Consultant State</label>
+    </div>
+    <div class='small-4 columns'>
+      <select name="addrCountry"
+              ng-model="country"
+              ng-change="changeState()"
+              ng-options="country as country.name for country in countries | orderBy:'name'">
+      </select>
+    </div>
+    <div class='small-4 columns'>
+      <select name="addrState"
+              ng-model="state"
+              ng-options="state as state.name for state in states | orderBy:'name'">
+      </select>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='small-4 columns'>
+      <label class="inline">Consultant Zip Code</label>
+    </div>
+    <div class='small-8 columns'>
+      <input type="text" ng-model='zipCode' />
+    </div>
+  </div>
   <div class="row">
     <div class='small-8 small-offset-4 columns'>
       <button type="submit" ng-click="submit()">Submit</button>
