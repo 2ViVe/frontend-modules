@@ -3,7 +3,7 @@
 angular.module('2ViVe')
   .directive('creditCardExpiration', function() {
     return {
-      restrict: 'A',
+      restrict: 'AC',
       controller: ['$scope', function($scope) {
         $scope.expirationYears = [];
         $scope.expirationMonths = [];
