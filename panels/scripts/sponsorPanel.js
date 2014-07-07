@@ -34,7 +34,7 @@ angular
   .controller('HandlerLocateModalController', ['$scope', '$location', 'Handlers', '$modalInstance', 'Registration.Countries', function($scope, $location, Handlers, $modalInstance, Countries) {
     $scope.input = {};
     $scope.submit = function(){
-      Handlers.fetch($scope.input.microchipId, $scope.input.firstName, $scope.input.lastName).then(function(results){
+      Handlers.fetch($scope.input.microchipId, $scope.input.firstName, $scope.input.lastName, $scope.input.zipCode, $scope.stateId).then(function(results){
         $scope.results = results;
         $scope.errorMessage = '';
         if (results.length == 0){
@@ -56,14 +56,17 @@ angular
       $modalInstance.dismiss('cancel');
     };
     Countries.fetch().then(function(countries) {
-      $scope.countries = countries.data;
+      $scope.input.countries = countries.data;
     });
 
     $scope.changeState = function(){
-      $scope.states = $scope.country.states;
+      $scope.input.states = $scope.input.country.states;
     };
     $scope.direct = function(handler){
       $modalInstance.close(handler);
+    };
+    $scope.selectState = function(){
+      $scope.stateId = $scope.input.state ? $scope.input.state.id : null;
     };
     $scope.results = [];
     $scope.targetHandler = '';

@@ -47,15 +47,16 @@
     </div>
     <div class='small-4 columns'>
       <select name="addrCountry"
-              ng-model="country"
+              ng-model="input.country"
               ng-change="changeState()"
-              ng-options="country as country.name for country in countries | orderBy:'name'">
+              ng-options="country as country.name for country in input.countries | orderBy:'name'">
       </select>
     </div>
     <div class='small-4 columns'>
       <select name="addrState"
-              ng-model="state"
-              ng-options="state as state.name for state in states | orderBy:'name'">
+              ng-model="input.state"
+              ng-change="selectState()"
+              ng-options="state as state.name for state in input.states | orderBy:'name'">
       </select>
     </div>
   </div>
@@ -64,7 +65,7 @@
       <label class="inline">Consultant Zip Code</label>
     </div>
     <div class='small-8 columns'>
-      <input type="text" ng-model='zipCode' />
+      <input type="text" ng-model='input.zipCode' />
     </div>
   </div>
   <div class="row">
