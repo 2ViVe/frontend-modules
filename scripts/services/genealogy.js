@@ -23,6 +23,13 @@ angular.module('2ViVe')
         });
       };
 
+      function getDisplayRank(rank) {
+        if (_rankMap[rank]) {
+          return _rankMap[rank];
+        }
+        return _rankMap[''];
+      }
+
       Genealogy.prototype.fetchUniLevels = function(distributorId) {
         var genealogy = this;
         if (genealogy.rootId && genealogy.rootId.toString() === distributorId.toString()) {
@@ -40,9 +47,9 @@ angular.module('2ViVe')
             genealogy.rootId = data.id;
           }
           genealogy.data = data;
-          genealogy.data.displayRank = _rankMap[genealogy.data.lifetimeRank];
+          genealogy.data.displayRank = getDisplayRank(genealogy.data.lifetimeRank);
           angular.forEach(genealogy.data.children, function(child) {
-            child.displayRank = _rankMap[child.lifetimeRank];
+            child.displayRank = getDisplayRank(child.lifetimeRank);
           });
           return genealogy;
         });
