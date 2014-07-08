@@ -43,16 +43,9 @@
   </div>
   <div class='row'>
     <div class='small-4 columns'>
-      <label class="inline">Consultant State</label>
+      <label class="inline">State</label>
     </div>
-    <div class='small-4 columns'>
-      <select name="addrCountry"
-              ng-model="input.country"
-              ng-change="changeState()"
-              ng-options="country as country.name for country in input.countries | orderBy:'name'">
-      </select>
-    </div>
-    <div class='small-4 columns'>
+    <div class='small-8 columns'>
       <select name="addrState"
               ng-model="input.state"
               ng-change="selectState()"
@@ -62,7 +55,7 @@
   </div>
   <div class='row'>
     <div class='small-4 columns'>
-      <label class="inline">Consultant Zip Code</label>
+      <label class="inline">Zip Code</label>
     </div>
     <div class='small-8 columns'>
       <input type="text" ng-model='input.zipCode' />
@@ -90,6 +83,7 @@
         <th>Id</th>
         <th>City</th>
         <th>State</th>
+        <th>Zip Code</th>
         </thead>
         <tbody>
         <tr ng-repeat='handler in results'>
@@ -116,6 +110,9 @@
           </td>
           <td>
             <p class='product-option'>{{handler.address.state}}</p>
+          </td>
+          <td>
+            <p class='product-option'>{{handler.address.zip}}</p>
           </td>
         </tr>
         </tbody>

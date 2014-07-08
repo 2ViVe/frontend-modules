@@ -56,12 +56,10 @@ angular
       $modalInstance.dismiss('cancel');
     };
     Countries.fetch().then(function(countries) {
-      $scope.input.countries = countries.data;
+      $scope.input.country = countries.data[0];
+      $scope.input.states = $scope.input.country.states;
     });
 
-    $scope.changeState = function(){
-      $scope.input.states = $scope.input.country.states;
-    };
     $scope.direct = function(handler){
       $modalInstance.close(handler);
     };
