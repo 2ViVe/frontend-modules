@@ -4,7 +4,7 @@ angular.module('2ViVe')
   .directive('calendar', ['$compile', function($compile) {
     return {
       restrict: 'A',
-      templateUrl: 'views/party/calendar.html',
+      templateUrl: 'bower_components/2ViVe/calendar/view.html',
       replace: true,
       scope: {
         selectedDate: '=',
