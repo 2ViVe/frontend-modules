@@ -15,4 +15,12 @@ angular
         return invitee.reply.toUpperCase() !== responseType.toUpperCase();
       });
     };
+  })
+  .filter('isActive', function() {
+    return function(events) {
+      return events.filter(function(event) {
+        var closeDate = moment(event.orderCloseTime);
+        return closeDate.isAfter(moment());
+      });
+    };
   });
