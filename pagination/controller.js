@@ -19,14 +19,16 @@ angular.module('2ViVe')
         onGoToPage: '=',
         templateUrl: '@'
       },
-      controller: ['$scope', '$attrs', function($scope, $attrs) {
+      controller: ['$scope', '$attrs', '$timeout', function($scope, $attrs, $timeout) {
         function refresh(total) {
           $scope.pageNumber = Math.ceil(total / $scope.numberPerPage);
           if ($scope.startPage === 'first') {
             $scope.currentPage = 1;
           } else if ($scope.startPage === 'last') {
             $scope.currentPage = $scope.pageNumber;
-            $scope.onGoToPage($scope.pageNumber);
+            $timeout(function() {
+              $scope.onGoToPage($scope.pageNumber);
+            });
           }
 
           $scope.pages = [];
