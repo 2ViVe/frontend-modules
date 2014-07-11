@@ -14,7 +14,7 @@ angular
       controller: ['$scope', function($scope) {
         $scope.isUseSSN = true;
         $scope.$watch('account.socialSecurityNumber', function(SSN) {
-          if ($scope.isUseSSN) {
+          if ($scope.isUseSSN && SSN !== undefined) {
             $scope.account.taxId = SSN;
           }
         });
