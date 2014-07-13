@@ -31,7 +31,8 @@
         <div class="columns small-8">
           <select id="expiration-year" name="expirationYear"
                   ng-model="creditcard.expirationYear"
-                  ng-options="year for year in expirationYears">
+                  ng-options="year for year in expirationYears"
+                  ng-change="onYearChange(creditcard.expirationYear)">
           </select>
         </div>
       </div>
@@ -50,7 +51,7 @@
     </div>
     <div class="small-3 columns end">
       <input type="text" id="cvv" name="cvv" ng-model="creditcard.cvv"/>
-      <small ng-show="submitted && step['cvv'].$error.required" class="error">
+      <small ng-show="submitted && creditcardForm.cvv.$error.required" class="error">
         This field is required.
       </small>
     </div>

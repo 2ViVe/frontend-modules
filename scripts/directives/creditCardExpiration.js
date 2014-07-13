@@ -15,6 +15,20 @@ angular.module('2ViVe')
         for (var month = 1; month < 13; month++) {
           $scope.expirationMonths.push(month);
         }
+
+        $scope.onYearChange = function(year) {
+          var month = 1;
+
+          $scope.expirationMonths = [];
+
+          if (year === currentYear) {
+            month = moment().mounth();
+          }
+
+          for (; month < 13; month++) {
+            $scope.expirationMonths.push(month);
+          }
+        };
       }]
     };
   });
