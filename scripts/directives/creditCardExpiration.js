@@ -19,7 +19,9 @@ angular.module('2ViVe')
         $scope.onYearChange = function(year) {
           var month = 1;
 
-          $scope.expirationMonths = [];
+          while($scope.expirationMonths.length) {
+            $scope.expirationMonths.pop();
+          }
 
           if (year === currentYear) {
             month = moment().mounth();
