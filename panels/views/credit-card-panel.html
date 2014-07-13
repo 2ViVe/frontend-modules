@@ -1,0 +1,58 @@
+<div class="credit-card-panel" ng-form="creditcardForm">
+  <div class="row title">
+    <h6 class="small-6 columns">
+      PAYMENT INFORMATION
+      <img src="images/cards.png" alt="Cards"/>
+    </h6>
+  </div>
+  <div class="row">
+    <div class="small-3 columns">
+      <label class="right inline required" for="card-number">Card Number</label>
+    </div>
+    <div class="small-5 end columns">
+      <input type="text" ng-model="creditcard.number" name="cardNumber" id="card-number"/>
+      <small ng-show="submitted && creditcardForm.cardNumber.$error.required" class="error">
+        This field is required.
+      </small>
+    </div>
+  </div>
+  <div class="row" data-credit-card-expiration>
+    <div class="small-3 columns">
+      <label class="right inline required" for="expiration-month">Expiration</label>
+    </div>
+    <div class="columns small-3 end">
+      <div class="row">
+        <div class="small-4 columns">
+          <select id="expiration-month" name="expiration-month"
+                  ng-model="creditcard.expirationMonth"
+                  ng-options="month for month in expirationMonths">
+          </select>
+        </div>
+        <div class="columns small-8">
+          <select id="expiration-year" name="expirationYear"
+                  ng-model="creditcard.expirationYear"
+                  ng-options="year for year in expirationYears">
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="columns small-12">
+          <small ng-show="submitted && (creditcardForm.expirationYear.$error.required || creditcardForm.expirationMonth.$error.required)" class="error">
+            This field is required.
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-3 columns">
+      <label class="right inline required" for="cvv">Card Code</label>
+    </div>
+    <div class="small-3 columns end">
+      <input type="text" id="cvv" name="cvv" ng-model="creditcard.cvv"/>
+      <small ng-show="submitted && step['cvv'].$error.required" class="error">
+        This field is required.
+      </small>
+    </div>
+  </div>
+</div>
