@@ -24,7 +24,7 @@ angular.module('2ViVe')
           }
 
           if (year === currentYear) {
-            month = moment().mounth();
+            month = moment().month() + 1;
           }
 
           for (; month < 13; month++) {
