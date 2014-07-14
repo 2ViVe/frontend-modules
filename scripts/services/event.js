@@ -183,6 +183,13 @@ angular.module('2ViVe')
     }])
   .factory('Events', ['$http', 'Dashlize', 'CamelCaseLize',
     function($http, dashlize, camelCaselize) {
+      function filterActive(events) {
+        return events && events.filter(function(event) {
+          var closeDate = moment(event.orderCloseTime);
+          return closeDate.isAfter(moment());
+        });
+      }
+
       return {
 
         fetchTemplates: function() {
@@ -201,23 +208,25 @@ angular.module('2ViVe')
           });
         },
 
-        fetchByUserId: function(userId) {
+        fetchByUserId: function(userId, shouldActive) {
           return $http.get('/api/v2/events', {
             transformResponse: camelCaselize,
             params: {
               'user-id': userId
             }
           }).then(function(response) {
-            return response.data.response;
+            var events = response.data.response;
+            return shouldActive ? filterActive(events) : events;
           });
         },
 
-        fetchAll: function() {
+        fetchAll: function(shouldActive) {
           return $http.get('/api/v2/events', {
             transformResponse: camelCaselize
-          }).then(function(response){
-              return response.data.response;
-            });
+          }).then(function(response) {
+            var events = response.data.response;
+            return shouldActive ? filterActive(events) : events;
+          });
         }
       };
     }]);
