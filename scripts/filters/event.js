@@ -23,4 +23,12 @@ angular
         return closeDate.isAfter(moment());
       });
     };
+  })
+  .filter('typeIs', function() {
+    return function(events, type) {
+      return events && events.filter(function(event) {
+        var startTimeIsBeforeNow = moment(event.startTime).isBefore();
+        return startTimeIsBeforeNow ? type === 'recent' : type === 'upcoming';
+      });
+    };
   });
