@@ -18,7 +18,7 @@ angular
   })
   .filter('isActive', function() {
     return function(events) {
-      return events.filter(function(event) {
+      return events && events.filter(function(event) {
         var closeDate = moment(event.orderCloseTime);
         return closeDate.isAfter(moment());
       });
