@@ -208,24 +208,17 @@ angular.module('2ViVe')
           });
         },
 
-        fetchByUserId: function(userId, shouldActive) {
+        fetchAll: function(options) {
+          var _options = angular.extend({}, options);
+
           return $http.get('/api/v2/events', {
             transformResponse: camelCaselize,
             params: {
-              'user-id': userId
+              'user-id': _options.userId
             }
           }).then(function(response) {
             var events = response.data.response;
-            return shouldActive ? filterActive(events) : events;
-          });
-        },
-
-        fetchAll: function(shouldActive) {
-          return $http.get('/api/v2/events', {
-            transformResponse: camelCaselize
-          }).then(function(response) {
-            var events = response.data.response;
-            return shouldActive ? filterActive(events) : events;
+            return _options.shouldActive ? filterActive(events) : events;
           });
         }
       };
