@@ -219,7 +219,8 @@ angular.module('2ViVe')
           return $http.get('/api/v2/events', {
             transformResponse: camelCaselize,
             params: {
-              'user-id': _options.userId
+              'user-id': _options.userId,
+              'type-id': _options.typeId
             }
           }).then(function(response) {
             var events = response.data.response;
