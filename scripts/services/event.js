@@ -13,6 +13,10 @@ angular.module('2ViVe')
         this.data = angular.extend(this.data, data);
       };
 
+      Event.prototype.isStarted = function() {
+        return moment(this.data.startTime).isBefore();
+      };
+
       Event.prototype.edit = function(data, time) {
         processTime(data, time);
         return $http.put('/api/v2/events/' + this.data.id, data, {
@@ -202,7 +206,8 @@ angular.module('2ViVe')
 
         fetchTypes: function() {
           return $http.get('/api/v2/events/types', {
-            transformResponse: camelCaselize
+            transformResponse: camelCaselize,
+            cache: true
           }).then(function(response) {
             return response.data.response;
           });
