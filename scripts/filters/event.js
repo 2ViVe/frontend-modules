@@ -24,11 +24,11 @@ angular
       });
     };
   })
-  .filter('typeIs', function() {
-    return function(events, type) {
+  .filter('periodIs', function() {
+    return function(events, period) {
       return events && events.filter(function(event) {
         var startTimeIsBeforeNow = moment(event.startTime).isBefore();
-        return startTimeIsBeforeNow ? type === 'recent' : type === 'upcoming';
+        return startTimeIsBeforeNow ? period === 'recent' : period === 'upcoming';
       });
     };
   });
