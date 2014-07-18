@@ -185,6 +185,95 @@ angular.module('2ViVe')
 
       return Event;
     }])
+  .factory('newEvents', ['$http', 'Dashlize', 'CamelCaseLize',
+    function($http, dashlize, camelCaselize) {
+      var Events = function() {
+      };
+
+      Events.prototype = {
+
+        fetchTemplates: function() {
+          var events = this;
+          return $http.get('/api/v2/events/templates', {
+            transformResponse: camelCaselize
+          }).then(function(response) {
+            events.templates = response.data.response;
+            return events;
+          });
+        },
+
+        fetchTypes: function() {
+          var events = this;
+          return $http.get('/api/v2/events/types', {
+            transformResponse: camelCaselize,
+            cache: true
+          }).then(function(response) {
+            events.types = response.data.response;
+            return events;
+          });
+        },
+
+        getTypesWithActiveEvent: function() {
+          var types = [];
+          var events = this;
+          angular.forEach(events.getByOptions({
+            isActive: true
+          }), function(activeEvent) {
+            if (types.filter(function(type) {
+              return type.id === activeEvent.typeId;
+            }).length === 0) {
+              types.push(activeEvent.type);
+            }
+          });
+          return types;
+        },
+
+        fetchAll: function(options) {
+          var events = this;
+          var _options = angular.extend({}, options);
+
+          return $http.get('/api/v2/events', {
+            transformResponse: camelCaselize,
+            params: {
+              'user-id': _options.userId,
+              'type-id': _options.typeId
+            }
+          }).then(function(response) {
+            events.data = response.data.response;
+            if (events.types && events.types.length > 0) {
+              angular.forEach(events.data, function(event) {
+                event.type = events.types.filter(function(type) {
+                  return type.id === event.typeId;
+                })[0];
+              });
+            }
+            return events;
+          });
+        },
+
+        getByOptions: function(options) {
+          var events = this.data;
+          var _options = angular.extend({}, options);
+
+          if (_options.isActive) {
+            events = events.filter(function(event) {
+              var closeDate = moment(event.orderCloseTime);
+              return closeDate.isAfter(moment());
+            });
+          }
+
+          if (_options.typeId) {
+            events = events.filter(function(event) {
+              return event.typeId === _options.typeId;
+            });
+          }
+
+          return events;
+        }
+      };
+
+      return Events;
+    }])
   .factory('Events', ['$http', 'Dashlize', 'CamelCaseLize',
     function($http, dashlize, camelCaselize) {
       function filterActive(events) {
