@@ -21,18 +21,6 @@ angular.module('2ViVe')
           });
       };
 
-      Organization.prototype.getCount = function(date, isShowOrderList){
-        return $http.get('/api/v2/reports/organizations/counts/unilevel', {
-          transformResponse: camelCaselize,
-          params : {
-            'date' : date,
-            'orders_only' : isShowOrderList ? 1 : undefined,
-          }
-        }).then(function(response) {
-            return response.data.response.count;
-          });
-      };
-
       Organization.prototype.searchByDistributorId = function(date, isShowOrderList, distributorId, page){
         return $http.get('/api/v2/reports/organizations/unilevel/' + distributorId, {
           transformResponse: camelCaselize,
@@ -43,7 +31,8 @@ angular.module('2ViVe')
           }
         }).then(function(response){
             var data = [];
-            data.push(response.data.response);
+            data.rows = [];
+            data.rows.push(response.data.response);
             return data;
           });
       };
