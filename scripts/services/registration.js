@@ -103,14 +103,9 @@ angular.module('2ViVe')
         });
       }
 
-      function createRetail(sponsor, login, password, email, shippingAddress) {
-        return $http.post('/api/v2/registrations/retail-customers', {
-          sponsor: sponsor,
-          login: login,
-          password: password,
-          email: email,
-          'shipping-address': shippingAddress
-        }, {
+      function createRetail(account, shippingAddress) {
+        account.shippingAddress = shippingAddress;
+        return $http.post('/api/v2/registrations/retail-customers', account, {
           transformResponse: camelCaselize,
           transformRequest: function(data) {
             return angular.toJson(dashlize(data));
