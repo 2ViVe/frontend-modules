@@ -192,6 +192,23 @@ angular.module('2ViVe')
 
       Events.prototype = {
 
+        getTemplateIndexById: function(id) {
+          var result = null;
+          angular.forEach(this.templates, function(template, index) {
+            if (template.id === id) {
+              result = index;
+              return null;
+            }
+          });
+          return result;
+        },
+
+        getTemplatesByTypeId: function(typeId) {
+          return this.templates && this.templates.filter(function(template) {
+            return template.typeId === typeId;
+          });
+        },
+
         fetchTemplates: function() {
           var events = this;
           return $http.get('/api/v2/events/templates', {
