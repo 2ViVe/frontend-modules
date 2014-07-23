@@ -29,7 +29,7 @@ angular.module('2ViVe')
           });
         },
 
-        orderSummary: function() {
+        fetchOrderSummary: function() {
           var autoShip = this;
           return $http.post('/api/v2/autoships/orders/summary', {
             'autoship-items': autoShip.autoShipItems,
