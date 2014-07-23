@@ -10,6 +10,7 @@ angular.module('2ViVe')
           var autoShip = this;
           return $http.post('/api/v2/autoships', {
             'payment-method-id': autoShip.paymentMethod.id,
+            'role-code': autoShip.roleCode === '' ? undefined : autoShip.roleCode,
             'autoship-day': autoShip.autoShipDay,
             'start-date': autoShip.startDate.year + '-' + autoShip.startDate.month + '-1',
             'creditcard': autoShip.creditcard,
