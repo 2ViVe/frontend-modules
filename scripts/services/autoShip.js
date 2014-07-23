@@ -6,12 +6,35 @@ angular.module('2ViVe')
       var AutoShip = function() {};
 
       AutoShip.prototype = {
-        orderSummary: function(autoShipItems, shippingAddress, shippingMethodId) {
+        create: function() {
+          var autoShip = this;
+          return $http.post('/api/v2/autoships', {
+            'payment-method-id': autoShip.paymentMethod.id,
+            'autoship-day': autoShip.autoShipDay,
+            'start-date': autoShip.startDate.year + '-' + autoShip.startDate.month + '-1',
+            'creditcard': autoShip.creditcard,
+            'shipping-method-id': autoShip.shippingMethod.id,
+            'shipping-address': autoShip.address.shipping,
+            'billing-address': autoShip.address.billing,
+            'autoship-items': autoShip.autoShipItems
+          }, {
+            transformResponse: camelCaselize,
+            transformRequest: function(data) {
+              return angular.toJson(dashlize(data));
+            }
+          }).then(function(response) {
+            autoShip.successInfo = response.data.response;
+            console.log(autoShip.successInfo);
+            return autoShip;
+          });
+        },
+
+        orderSummary: function() {
           var autoShip = this;
           return $http.post('/api/v2/autoships/orders/summary', {
-            'autoship-items': autoShipItems,
-            'shipping-address': shippingAddress,
-            'shipping-method-id': shippingMethodId
+            'autoship-items': autoShip.autoShipItems,
+            'shipping-address': autoShip.address.shipping,
+            'shipping-method-id': autoShip.shippingMethod.id
           }, {
             transformResponse: camelCaselize,
             transformRequest: function(data) {
@@ -32,6 +55,20 @@ angular.module('2ViVe')
       var AutoShips = function() {};
 
       AutoShips.prototype = {
+
+        fetchPaymentMethods: function(countryId) {
+          var autoShip = this;
+          return $http.get('/api/v2/autoships/payment-methods', {
+            transformResponse: camelCaselize,
+            cache: true,
+            params: {
+              'country-id': countryId
+            }
+          }).then(function(response) {
+            autoShip.paymentMethods = response.data.response;
+            return autoShip;
+          });
+        },
 
         fetch: function() {
           var autoShips = this;
