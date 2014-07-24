@@ -6,6 +6,10 @@ angular.module('2ViVe')
       var AutoShip = function() {};
 
       AutoShip.prototype = {
+        cancel: function() {
+          return $http.delete('/api/v2/autoships/' + this.id);
+        },
+
         create: function() {
           var autoShip = this;
           return $http.post('/api/v2/autoships', {
