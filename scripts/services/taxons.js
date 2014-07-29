@@ -15,6 +15,11 @@ angular.module('2ViVe')
       }
 
       var Taxons = {
+
+        getDataAt: function(index) {
+          return _data ? _data[index] : null;
+        },
+
         fetch: function() {
           return $http.get('/api/v2/taxons', {
             transformResponse: CamelCaseLize,
@@ -25,6 +30,7 @@ angular.module('2ViVe')
             return Taxons;
           });
         },
+
         getByPositionBetween: function(startPosition, endPostion) {
           var results = [];
           angular.forEach(_data, function(taxon) {
