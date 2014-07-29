@@ -87,6 +87,19 @@ angular.module('2ViVe')
       extendData(address, this, this.type());
     };
 
+    Address.prototype.fullFill = function(data) {
+      var address = this;
+      address.extendDataFrom(data);
+
+      return Countries
+        .findById(data.countryId)
+        .then(function(country) {
+          address.country = country;
+          address.state = address.country.getStateById(data.stateId);
+          return address;
+        });
+    };
+
     Address.prototype.validate = function() {
       var deferred = $q.defer();
       var type = this.type();
