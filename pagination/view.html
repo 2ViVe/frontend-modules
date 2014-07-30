@@ -1,4 +1,9 @@
 <ul class="pagination">
+    <li ng-show="limitArr.length!==0">
+        <select ng-options='limit for limit in limitArr' ng-model="numberPerPage" ng-change="updateLimit()" class="secondary-item no-margin-bottom">
+            <option>{{limit}}</option>
+        </select>
+    </li>
   <li class="arrow" ng-class="{'unavailable': currentPage === 1}">
     <a ng-click="previousPage()">&laquo;</a>
   </li>

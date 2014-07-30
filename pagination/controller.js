@@ -10,24 +10,27 @@ angular.module('2ViVe')
       },
       scope: {
         hidePageNumber: '@',
-        numberPerPage: '=',
+        numberPerPage: '@',
         startPage: '@',
         refresh: '=',
         total: '=',
         onNextPage: '=',
         onPreviousPage: '=',
         onGoToPage: '=',
-        templateUrl: '@'
+        templateUrl: '@',
+        limitArr : '='
       },
       controller: ['$scope', '$attrs', '$timeout', function($scope, $attrs, $timeout) {
         function refresh(total) {
           $scope.pageNumber = Math.ceil(total / $scope.numberPerPage);
           if ($scope.startPage === 'first') {
             $scope.currentPage = 1;
+            $scope.offset = 0;
           } else if ($scope.startPage === 'last') {
             $scope.currentPage = $scope.pageNumber;
             $timeout(function() {
-              $scope.onGoToPage($scope.pageNumber);
+              $scope.offset = total - 1;
+              $scope.onGoToPage($scope.offset, $scope.numberPerPage);
             });
           }
 
@@ -48,7 +51,8 @@ angular.module('2ViVe')
 
         $scope.goTo = function(page) {
           $scope.currentPage = page;
-          $scope.onGoToPage(page);
+          $scope.offset = ($scope.currentPage - 1) * 25;
+          $scope.onGoToPage($scope.offset, $scope.numberPerPage);
         };
 
         $scope.previousPage = function() {
@@ -64,6 +68,10 @@ angular.module('2ViVe')
             $scope.onNextPage($scope.currentPage);
           }
         };
+
+        $scope.updateLimit = function(){
+          $scope.onGoToPage($scope.offset, $scope.numberPerPage);
+        }
       }]
     };
   });

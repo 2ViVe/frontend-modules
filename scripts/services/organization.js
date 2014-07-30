@@ -5,16 +5,17 @@ angular.module('2ViVe')
     function($http, dashlize, camelCaselize) {
       var Organization = function() {};
 
-      Organization.prototype.fetch = function(date, isShowOrderList, distributorId, page){
+      Organization.prototype.fetch = function(date, isShowOrderList, distributorId, page, limit){
         if (distributorId) {
-          return this.searchByDistributorId(date, isShowOrderList, distributorId, page);
+          return this.searchByDistributorId(date, isShowOrderList, distributorId, page, limit);
         }
         return $http.get('/api/v2/reports/organizations/unilevel', {
           transformResponse: camelCaselize,
           params : {
             'date' : date,
             'orders_only' : isShowOrderList ? 1 : undefined,
-            'offset' : page || undefined
+            'offset' : page || undefined,
+            'limit' : limit || 25
           }
         }).then(function(response) {
             return response.data.response;
@@ -27,7 +28,8 @@ angular.module('2ViVe')
           params : {
             'date' : date,
             'orders_only' : isShowOrderList ? 1 : undefined,
-            'offset' : page || undefined
+            'offset' : page || undefined,
+            'limit' : limit || 25
           }
         }).then(function(response){
             var data = [];
