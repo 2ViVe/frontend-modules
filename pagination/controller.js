@@ -10,7 +10,7 @@ angular.module('2ViVe')
       },
       scope: {
         hidePageNumber: '@',
-        numberPerPage: '@',
+        numberPerPage: '=',
         startPage: '@',
         refresh: '=',
         total: '=',
