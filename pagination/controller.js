@@ -53,10 +53,11 @@ angular.module('2ViVe')
         }
 
         $scope.refresh = refresh;
+        refresh($scope.total);
 
         $scope.goTo = function(page) {
           $scope.currentPage = page;
-          $scope.offset = ($scope.currentPage - 1) * 25;
+          $scope.offset = ($scope.currentPage - 1) * $scope.limit;
           $scope.onGoToPage(page, $scope.offset, $scope.limit);
         };
 
