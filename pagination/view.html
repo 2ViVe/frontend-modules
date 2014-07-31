@@ -1,17 +1,31 @@
 <ul class="pagination">
-    <li ng-show="limitArr.length!==0">
-        <select ng-options='limit for limit in limitArr' ng-model="numberPerPage" ng-change="updateLimit()" class="secondary-item no-margin-bottom">
-            <option>{{limit}}</option>
-        </select>
-    </li>
+  <li>
+    {{offset + 1}} -
+    {{ ((offset + limit) > total) ? total : (offset + limit) }} of {{total}}
+  </li>
+
   <li class="arrow" ng-class="{'unavailable': currentPage === 1}">
     <a ng-click="previousPage()">&laquo;</a>
   </li>
-  <li ng-hide="hidePageNumber === 'true'" ng-repeat="page in pages"
+  <li ng-hide="hidePageNumber" ng-repeat="page in pages"
       ng-class="{'current': page === currentPage}">
     <a ng-click="goTo(page)">{{page}}</a>
   </li>
   <li class="arrow" ng-class="{'unavailable': currentPage === pageNumber}">
     <a ng-click="nextPage()">&raquo;</a>
+  </li>
+
+  <li ng-hide="limits.length === 0">
+    <select ng-options="number for number in limits"
+            ng-model="limit"
+            ng-change="updateLimit()"
+            id="number-per-page"
+            class="no-margin-bottom">
+    </select>
+  </li>
+  <li ng-hide="limits.length === 0">
+    <label for="number-per-page" class="inline no-margin-bottom">
+      Per Page
+    </label>
   </li>
 </ul>
