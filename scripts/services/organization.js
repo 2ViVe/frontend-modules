@@ -22,7 +22,7 @@ angular.module('2ViVe')
           });
       };
 
-      Organization.prototype.searchByDistributorId = function(date, isShowOrderList, distributorId, page){
+      Organization.prototype.searchByDistributorId = function(date, isShowOrderList, distributorId, page, limit){
         return $http.get('/api/v2/reports/organizations/unilevel/' + distributorId, {
           transformResponse: camelCaselize,
           params : {
@@ -34,7 +34,9 @@ angular.module('2ViVe')
         }).then(function(response){
             var data = [];
             data.rows = [];
-            data.rows.push(response.data.response);
+            if (Object.getOwnPropertyNames(response.data.response).length > 0) {
+              data.rows.push(response.data.response);
+            };
             return data;
           });
       };
