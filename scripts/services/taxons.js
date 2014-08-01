@@ -58,7 +58,7 @@ angular.module('2ViVe')
             return result;
           }
           angular.forEach(taxon.subTaxons, function(subTaxon) {
-            if (subTaxon.permalink.trim() === permalink.trim()) {
+            if (subTaxon.permalink && subTaxon.permalink.trim() === permalink.trim()) {
               result = subTaxon;
               return null;
             }
@@ -81,7 +81,7 @@ angular.module('2ViVe')
         getByPermalink: function(permalink) {
           var result = null;
           angular.forEach(_data, function(taxon) {
-            if (taxon.permalink.trim() === permalink.trim()) {
+            if (taxon.permalink && taxon.permalink.trim() === permalink.trim()) {
               result = taxon;
               return null;
             }
