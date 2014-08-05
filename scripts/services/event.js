@@ -107,12 +107,12 @@ angular.module('2ViVe')
       Event.prototype.getTime = function() {
         var time = {};
         var startTime = moment(this.data.startTime).local();
-        if (startTime.isValid()) {
+        if (this.data.startTime && startTime.isValid()) {
           time.startDate = startTime.format('YYYY-MM-DD');
           time.startTime = startTime.format('HH:mm');
         }
         var endTime = moment(this.data.endTime).local();
-        if (endTime.isValid()) {
+        if (this.data.endTime && endTime.isValid()) {
           time.endDate = endTime.format('YYYY-MM-DD');
           time.endTime = endTime.format('HH:mm');
         }
