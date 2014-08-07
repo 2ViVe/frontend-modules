@@ -3,8 +3,8 @@
 (function() {
 
   angular.module('2ViVe')
-    .controller('profileInfoPanelCtrl', ['$scope', 'User', '$http', '$q', 'LocalStorage', '$location',
-      function($scope, User, $http, $q, LocalStorage, $location) {
+    .controller('profileInfoPanelCtrl', ['$scope', 'User', '$http', '$q', 'LocalStorage', '$location', 'Avatar',
+      function($scope, User, $http, $q, LocalStorage, $location, Avatar) {
         $scope.isEditing = false;
         $scope.isLoading = true;
         $scope.submitted = false;
@@ -106,6 +106,8 @@
         $scope.refreshImage = function(imageUrl) {
           $scope.profile.imageUrl = imageUrl;
         };
+
+        $scope.upload = Avatar.upload;
 
       }])
     .directive('profileInfoPanel', function() {
