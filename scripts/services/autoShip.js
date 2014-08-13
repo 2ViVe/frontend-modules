@@ -29,7 +29,6 @@ angular.module('2ViVe')
             }
           }).then(function(response) {
             autoShip.successInfo = response.data.response;
-            console.log(autoShip.successInfo);
             return autoShip;
           });
         },
