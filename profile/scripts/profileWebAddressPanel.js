@@ -14,7 +14,8 @@
         controller: 'profileAddressPanelCtrl',
         scope: {
           addressType: '@',
-          addressTitle: '@'
+          addressTitle: '@',
+          address: '='
         }
       };
     });
