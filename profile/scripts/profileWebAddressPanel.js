@@ -15,8 +15,6 @@
         scope: {
           addressType: '@',
           addressTitle: '@'
-        },
-        link: function() {
         }
       };
     });

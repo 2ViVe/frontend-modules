@@ -3,25 +3,20 @@
 (function() {
 
   angular.module('2ViVe')
-    .controller('profileAddressPanelCtrl', ['$scope', 'Address', 'Registration', 'Registration.Countries',
-      function($scope, Address, Registration, Countries) {
+    .controller('profileAddressPanelCtrl', ['$scope', 'Address',
+      function($scope, Address) {
 
         $scope.isEditing = false;
-        $scope.isLoading = true;
 
-        Countries.fetch().then(function(countries) {
-          $scope.countries = countries.data;
-          Address
-            .fetch()
-            .then(function(addr) {
-              if (!addr[$scope.addressType.toLowerCase()]) {
-                addr.addType($scope.addressType.toLowerCase());
-              }
-              $scope.address = addr[$scope.addressType.toLowerCase()];
-              $scope.initAddress = angular.copy($scope.address);
-            });
-        });
-
+        Address
+          .fetch()
+          .then(function(addr) {
+            if (!addr[$scope.addressType.toLowerCase()]) {
+              addr.addType($scope.addressType.toLowerCase());
+            }
+            $scope.address = addr[$scope.addressType.toLowerCase()];
+            $scope.initAddress = angular.copy($scope.address);
+          });
 
         $scope.restore = function() {
           return angular.extend($scope.address, $scope.initAddress);
@@ -57,9 +52,8 @@
         controller: 'profileAddressPanelCtrl',
         scope: {
           addressType: '@',
-          addressTitle: '@'
-        },
-        link: function() {
+          addressTitle: '@',
+          countries: '='
         }
       };
     });
