@@ -10,9 +10,11 @@ angular.module('2ViVe')
       replace: true,
       scope: {
         submitted: '=',
-        creditcard: '='
+        creditcard: '=',
+        isCvvRequired: '='
       },
       controller: ['$scope', function($scope) {
+        $scope._isCVVRequired = $scope.isCvvRequired === undefined ? true : $scope.isCvvRequired;
         $scope.expirationYears = [];
         $scope.expirationMonths = [];
         var currentYear = moment().year();
