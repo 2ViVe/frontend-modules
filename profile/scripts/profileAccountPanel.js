@@ -3,25 +3,15 @@
 (function() {
 
   angular.module('2ViVe')
-    .controller('profileAccountPanelCtrl', ['$scope', 'User', '$http', '$q', 'LocalStorage', '$location', 'Avatar',
-      function($scope, User, $http, $q, LocalStorage, $location, Avatar) {
+    .controller('profileAccountPanelCtrl', ['$scope', '$location', 'Avatar',
+      function($scope, $location, Avatar) {
         $scope.isEditing = false;
-        $scope.isLoading = true;
         $scope.submitted = false;
 
         $scope.passwords = {
           newPassword: '',
           oldPassword: ''
         };
-
-        User.fetch().then(function(result) {
-          $scope.profile = result;
-          $scope.isLoading = false;
-          $scope.initProfile = angular.copy($scope.profile);
-        }).catch(function() {
-          LocalStorage.setPathAfterLogin($location.path());
-          $location.path('/signin');
-        });
 
         $scope.toggle = function() {
           $scope.isEditing = !$scope.isEditing;
@@ -46,38 +36,7 @@
             .catch(respErrHandler);
         };
 
-
-        // TODO: remove this when backend api fixed
-        function checkEmailAvalibility(needCheck) {
-          var deferred = $q.defer();
-
-          if (needCheck) {
-            $http.get('/api/v2/registrations/availabilities', {
-              params: { email: $scope.profile.email }
-            }).success(function(data) {
-              (data.response.available ? deferred.resolve : deferred.reject)({
-                data: {
-                  meta: {
-                    error: {
-                      errorCode: 'InvalidEmail',
-                      message: 'Email is not available.'
-                    }
-                  }
-                }
-              });
-            });
-          }
-          else {
-            $scope.$evalAsync(function() {
-              deferred.resolve(true);
-            });
-          }
-
-          return deferred.promise;
-        }
-
         function respErrHandler(resp) {
-          $scope.isLoading = false;
           $scope.isEditing = true;
           if (!resp.data.meta || !resp.data.meta.error) {
             return;
@@ -89,14 +48,8 @@
 
         $scope.save = function() {
           $scope.submitted = true;
-          $scope.isLoading = true;
-          checkEmailAvalibility($scope.profile.email !== $scope.initProfile.email)
+          $scope.profile.save()
             .then(function() {
-              $scope.initProfile.email = $scope.profile.email;
-              return $scope.profile.save();
-            })
-            .then(function() {
-              $scope.isLoading = false;
               $scope.isEditing = false;
               $scope.initProfile = angular.copy($scope.profile);
             })
@@ -113,15 +66,13 @@
     .directive('viveProfileAccountPanel', function() {
       return {
         restrict: 'E',
-        replace: true,
         templateUrl: function(element, attr) {
-          var templateUrl = attr.templateUrl;
-          return templateUrl ? templateUrl : 'bower_components/2ViVe-local/views/profile/profile-account-panel.html';
+          return attr.tpl ? attr.tpl : 'bower_components/2ViVe-local/views/profile/profile-account-panel.html';
         },
         controller: 'profileAccountPanelCtrl',
-        scope: {},
-        link: function() {
-
+        scope: {
+          profile: '=',
+          initProfile: '='
         }
       };
     });
