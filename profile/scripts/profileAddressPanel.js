@@ -15,6 +15,7 @@
             return country.id === $scope.initAddress.country.id;
           })[0];
           $scope.address.state = $scope.address.country.getStateById($scope.initAddress.state.id);
+          $scope.address.errors = {};
         };
 
         $scope.toggle = function() {
