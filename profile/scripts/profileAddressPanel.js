@@ -10,7 +10,11 @@
         $scope.initAddress = angular.copy($scope.address);
 
         $scope.restore = function() {
-          return angular.extend($scope.address, $scope.initAddress);
+          angular.extend($scope.address, $scope.initAddress);
+          $scope.address.country = $scope.countries.data.filter(function(country) {
+            return country.id === $scope.initAddress.country.id;
+          })[0];
+          $scope.address.state = $scope.address.country.getStateById($scope.initAddress.state.id);
         };
 
         $scope.toggle = function() {
