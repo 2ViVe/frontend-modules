@@ -53,13 +53,24 @@ angular.module('2ViVe')
         });
       }
 
-      function orderSummary(homeAddress, shippingAddress, billingAddress, lineItems, webAddress, roleCode) {
+      function orderSummaryWith(data) {
+        data['role-cole'] = data['role-cole'] ? data['role-cole'] : DEFAULT_REGISTRATION_ROLE_CODE;
+        return $http.post('/api/v2/registrations/orders/summary', data, {
+          transformResponse: camelCaselize,
+          transformRequest: function(data) {
+            return angular.toJson(dashlize(data));
+          }
+        });
+      }
+
+      function orderSummary(homeAddress, shippingAddress, billingAddress, lineItems, webAddress, autoShipLineItems, roleCode) {
         return $http.post('/api/v2/registrations/orders/summary', {
           'home-address': homeAddress,
           'shipping-address': shippingAddress,
           'billing-address': billingAddress,
           'website-address': webAddress,
           'line-items': lineItems,
+          'autoship-line-items': autoShipLineItems,
           'role-code': roleCode ? roleCode : DEFAULT_REGISTRATION_ROLE_CODE
         }, {
           transformResponse: camelCaselize,
@@ -144,6 +155,7 @@ angular.module('2ViVe')
         orderAdjustments: orderAdjustments,
         getShippingMethods: getShippingMethods,
         orderSummary: orderSummary,
+        orderSummaryWith: orderSummaryWith,
         getProducts: getProducts,
         countries: fetchCountries,
         validateAvailabilities: validateAvailabilities,
