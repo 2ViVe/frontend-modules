@@ -47,9 +47,9 @@ angular.module('2ViVe')
             genealogy.rootId = data.id;
           }
           genealogy.data = data;
-          genealogy.data.displayRank = getDisplayRank(genealogy.data.lifetimeRank);
+          genealogy.data.displayRank = getDisplayRank(genealogy.data.paidRank);
           angular.forEach(genealogy.data.children, function(child) {
-            child.displayRank = getDisplayRank(child.lifetimeRank);
+            child.displayRank = getDisplayRank(child.paidRank);
           });
           return genealogy;
         });
