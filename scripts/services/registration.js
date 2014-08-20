@@ -60,6 +60,8 @@ angular.module('2ViVe')
           transformRequest: function(data) {
             return angular.toJson(dashlize(data));
           }
+        }).then(function(response) {
+          return response.data.response;
         });
       }
 
