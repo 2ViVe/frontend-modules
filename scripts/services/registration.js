@@ -92,7 +92,7 @@ angular.module('2ViVe')
         });
       }
 
-      function create(paymentMethodId, userInfo, creditcard, homeAddress, shippingMethodId, shippingAddress, billingAddress, lineItems, webAddress) {
+      function create(paymentMethodId, userInfo, creditcard, homeAddress, shippingMethodId, shippingAddress, billingAddress, lineItems, webAddress, autoShipLineItems) {
         var _userInfo = angular.copy(userInfo);
         _userInfo['role-code'] = DEFAULT_REGISTRATION_ROLE_CODE;
         _userInfo['country-iso'] = userInfo.country.iso;
@@ -107,7 +107,8 @@ angular.module('2ViVe')
           'shipping-address': shippingAddress,
           'billing-address': billingAddress,
           'website-address': webAddress,
-          'line-items': lineItems
+          'line-items': lineItems,
+          'autoship-line-items': autoShipLineItems
         }, {
           transformResponse: camelCaselize,
           transformRequest: function(data) {
