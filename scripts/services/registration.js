@@ -54,7 +54,7 @@ angular.module('2ViVe')
       }
 
       function orderSummaryWith(data) {
-        data['role-cole'] = data['role-cole'] ? data['role-cole'] : DEFAULT_REGISTRATION_ROLE_CODE;
+        data['role-code'] = data['role-code'] ? data['role-code'] : DEFAULT_REGISTRATION_ROLE_CODE;
         return $http.post('/api/v2/registrations/orders/summary', data, {
           transformResponse: camelCaselize,
           transformRequest: function(data) {
