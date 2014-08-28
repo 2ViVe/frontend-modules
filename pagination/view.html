@@ -11,6 +11,10 @@
       ng-class="{'current': page === currentPage}">
     <a ng-click="goTo(page)">{{page}}</a>
   </li>
+  <li ng-show="showEllipsis"><a>...</a></li>
+  <li ng-hide="hidePageNumber" ng-class="{'current': pageNumber === currentPage}">
+    <a ng-click="goTo(pageNumber)">{{pageNumber}}</a>
+  </li>
   <li class="arrow" ng-class="{'unavailable': currentPage === pageNumber}">
     <a ng-click="nextPage()">&raquo;</a>
   </li>

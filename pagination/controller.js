@@ -35,8 +35,16 @@ angular.module('2ViVe')
         function refreshPage(total, limit) {
           $scope.pageNumber = Math.ceil(total / limit);
           $scope.pages = [];
-          for (var i = 1; i <= $scope.pageNumber; i++) {
-            $scope.pages.push(i);
+          if ($scope.pageNumber > 10) {
+            $scope.showEllipsis = true;
+            for (var i = 1; i <= 9; i++) {
+              $scope.pages.push(i);
+            }
+          } else {
+            $scope.showEllipsis = false;
+            for (var i = 1; i <= $scope.pageNumber - 1; i++) {
+              $scope.pages.push(i);
+            }
           }
         }
 
@@ -59,12 +67,33 @@ angular.module('2ViVe')
           $scope.currentPage = page;
           $scope.offset = ($scope.currentPage - 1) * $scope.limit;
           $scope.onGoToPage(page, $scope.offset, $scope.limit);
+          offsetPages(page);
         };
+
+        function offsetPages(offset) {
+          if ($scope.pageNumber < 10 || offset <= 2) {
+            return;
+          };
+          if (offset >= ($scope.pageNumber - 8)) {
+            $scope.showEllipsis = false;
+            $scope.pages = [];
+            for (var i = 9; i > 0; i--) {
+              $scope.pages.push($scope.pageNumber - i);
+            };
+          } else {
+            $scope.showEllipsis = true;
+            $scope.pages = [];
+            for (var i = 1; i <= 9; i++) {
+              $scope.pages.push(i + offset - 2);
+            };
+          }
+        }
 
         $scope.previousPage = function() {
           if ($scope.currentPage > 1) {
             $scope.currentPage--;
             $scope.onPreviousPage($scope.currentPage, $scope.offset, $scope.limit);
+            offsetPages($scope.currentPage);
           }
         };
 
@@ -72,6 +101,7 @@ angular.module('2ViVe')
           if ($scope.currentPage < $scope.pageNumber) {
             $scope.currentPage++;
             $scope.onNextPage($scope.currentPage, $scope.offset, $scope.limit);
+            offsetPages($scope.currentPage);
           }
         };
 
