@@ -82,6 +82,9 @@ angular.module('2ViVe')
             Order.data = response.data.response;
             Order.data.optionalFields = shopping.optionalFields;
             return Order;
+          }).catch(function(response) {
+            Order.error = response.data.meta.error;
+            return Order;
           });
         },
         adjustments: function(shippingMethodId) {
