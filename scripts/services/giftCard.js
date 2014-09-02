@@ -96,6 +96,34 @@ angular.module('2ViVe')
         ipCookie.remove('eventId');
       };
 
+      GiftCard.prototype.placeOrderWithMultiple = function(creditcard) {
+        var giftCard = this;
+
+        if (giftCard.orderId) {
+          return $http.post('/api/v2/giftcard-orders/' + giftCard.orderId + '/payments', {
+            'creditcard': creditcard
+          }, {
+            transformRequest: function(data) {
+              return angular.toJson(dashlize(data));
+            }
+          });
+        }
+
+        return $http.post('/api/v2/giftcards', {
+          'giftcards': ipCookie('giftLineItems'),
+          'creditcard': creditcard,
+          'optional-fields': this.optionalFields
+        }, {
+          transformRequest: function(data) {
+            return angular.toJson(dashlize(data));
+          }
+        }).success(function(data) {
+          if (data.response['payment-state'] === 'failed') {
+            giftCard.orderId = data.response['order-id'];
+          }
+        });
+      };
+
       GiftCard.prototype.placeOrder = function(creditcard) {
         var giftCard = this;
 
