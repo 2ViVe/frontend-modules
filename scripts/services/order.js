@@ -81,6 +81,9 @@ angular.module('2ViVe')
           }).then(function(response) {
             Order.data = response.data.response;
             Order.data.optionalFields = shopping.optionalFields;
+            if (Order.error) {
+              delete Order.error;
+            }
             return Order;
           }).catch(function(response) {
             Order.error = response.data.meta.error;
