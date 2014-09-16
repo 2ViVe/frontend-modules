@@ -45,7 +45,14 @@
     <div class='small-4 columns'>
       <label class="inline">State</label>
     </div>
-    <div class='small-8 columns'>
+    <div class='small-4 columns'>
+      <select name="addrState"
+              ng-model="input.seleteCountry"
+              ng-change="selectCountry()"
+              ng-options="country as country.name for country in input.country | orderBy:'name'">
+      </select>
+    </div>
+    <div class='small-4 columns'>
       <select name="addrState"
               ng-model="input.state"
               ng-change="selectState()"

@@ -56,10 +56,17 @@ angular
     $scope.cancel = function() {
       $modalInstance.dismiss('cancel');
     };
+
     Countries.fetch().then(function(countries) {
-      $scope.input.country = countries.data[0];
-      $scope.input.states = $scope.input.country.states;
+      $scope.input.country = countries.data;
+      $scope.input.states = [];
     });
+
+    $scope.selectCountry = function(){
+      if ($scope.input.seleteCountry) {
+        $scope.input.states = $scope.input.seleteCountry.states;
+      };
+    };
 
     $scope.direct = function(handler){
       $modalInstance.close(handler);
