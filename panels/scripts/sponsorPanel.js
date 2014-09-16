@@ -18,11 +18,12 @@ angular
         submitted: '=',
         required: '@'
       },
-      controller: ['$scope', '$modal', function($scope, $modal) {
+      controller: ['$scope', '$modal', '$attrs', function($scope, $modal, $attrs) {
+        var modalTpl = $attrs.modalTpl ? $attrs.modalTpl : 'bower_components/2ViVe/panels/views/handler-locate.html';
         $scope.$errorMessages = {};
         $scope.searchHandler = function(){
           $modal.open({
-            templateUrl: 'bower_components/2ViVe/panels/views/handler-locate.html',
+            templateUrl: modalTpl,
             controller: 'HandlerLocateModalController'
           }).result.then(function(result){
               $scope.account.sponsor = result.distributorId;
