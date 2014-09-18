@@ -51,5 +51,16 @@ angular.module('2ViVe')
         });
       };
 
+      Commission.prototype.fetchTotal = function(date, id){
+        return $http.get('/api/v2/commissions/summaries/' + id, {
+          transformResponse: camelCaselize,
+          params : {
+            'date' : date
+          }
+        }).then(function(response) {
+          return response.data.response;
+        });
+      };
+
       return Commission;
     }]);
