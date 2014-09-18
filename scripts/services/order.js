@@ -69,24 +69,20 @@ angular.module('2ViVe')
           });
           return currentShippingMethod;
         },
-        checkout: function(shopping) {
+        checkout: function(shopping, coupons) {
           return $http.post('/api/v2/orders/checkout', {
             'line-items': shopping.items,
-            'optional-fields': shopping.optionalFields
+            'optional-fields': shopping.optionalFields,
+            'coupons': coupons
           }, {
             transformResponse: CamelCaseLize,
             transformRequest: function(data) {
               return angular.toJson(dashlize(data));
             }
           }).then(function(response) {
+            Order.shopping = shopping;
             Order.data = response.data.response;
             Order.data.optionalFields = shopping.optionalFields;
-            if (Order.error) {
-              delete Order.error;
-            }
-            return Order;
-          }).catch(function(response) {
-            Order.error = response.data.meta.error;
             return Order;
           });
         },
@@ -105,12 +101,13 @@ angular.module('2ViVe')
             Order.data.adjustments = data.response;
           });
         },
-        create: function(paymentMethodId, shippingMethodId, creditCard, orderId, giftcard) {
+        create: function(paymentMethodId, shippingMethodId, creditCard, orderId, giftcard, coupons) {
           if (orderId) {
             return $http.post('/api/v2/orders/' + orderId + '/payments', {
               'giftcard': giftcard,
               'payment-method-id': paymentMethodId,
-              'creditcard': creditCard
+              'creditcard': creditCard,
+              'coupons': coupons
             }, {
               transformResponse: CamelCaseLize,
               transformRequest: function(data) {
