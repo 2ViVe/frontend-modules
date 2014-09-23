@@ -138,9 +138,13 @@ angular.module('2ViVe')
         }
 
         return $http.post('/api/v2/giftcards', {
-          'variant-id': this.selectedGiftCard.id,
           'creditcard': creditcard,
-          'email-info': this.info,
+          'giftcards': [
+            {
+              'variant-id': this.selectedGiftCard.id,
+              'email-info': this.info
+            }
+          ],
           'optional-fields': this.optionalFields
         }, {
           transformRequest: function(data) {
