@@ -98,10 +98,13 @@ angular.module('2ViVe')
           });
         },
 
-        fetchProducts: function() {
+        fetchProducts: function(roleCode) {
           var autoShips = this;
           return $http.get('/api/v2/autoships/products', {
-            transformResponse: camelCaselize
+            transformResponse: camelCaselize,
+            params: {
+              'role-code': roleCode
+            }
           }).then(function(response) {
             autoShips.products = response.data.response.products;
             return autoShips;
