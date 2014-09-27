@@ -12,6 +12,11 @@ angular
       $scope.submit = function() {
         if ($scope.submitted || this.form.$valid) {
 
+          if ($scope.address.country.name === "Russian Federation") {
+            $scope.address.state = null;
+            $scope.address.stateId = null;
+          };
+
           $scope.address.validate()
             .then(function() {
               $modalInstance.close($scope.address);

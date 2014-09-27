@@ -35,6 +35,10 @@
           if (!isValid) {
             return;
           }
+          if ($scope.address.country.name === "Russian Federation") {
+            $scope.address.state = null;
+            $scope.address.stateId = null;
+          };
           $scope.address.update()
             .then(function() {
               $scope.isEditing = false;
