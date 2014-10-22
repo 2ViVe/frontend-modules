@@ -39,7 +39,7 @@ angular
         $scope.results = results;
         $scope.errorMessage = '';
         if (results.length == 0){
-          $scope.errorMessage = 'Handler Not Found';
+          $scope.errorMessage = 'Data Not Found';
         }
       });
 
