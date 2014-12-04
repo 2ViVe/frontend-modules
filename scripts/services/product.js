@@ -135,12 +135,9 @@ angular.module('2ViVe')
 
             if (product.data && product.data.variants && product.data.variants.length !==0) {
               product.data.variants = product.data.variants.filter(function(variant){
-                console.log(variant)
-                if (!variant.deleted_at) {
-                  console.log('true')
+                if (!variant.deletedAt) {
                   return true;
                 }
-                console.log('false')
                 return false;
               });
             }
