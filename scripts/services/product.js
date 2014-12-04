@@ -133,6 +133,15 @@ angular.module('2ViVe')
           }).then(function(response) {
             product.data = response.data.response;
 
+            if (product.data && product.data.variants && product.data.variants.length !==0) {
+              product.data.variants = product.data.variants.filter(function(variant){
+                if (!variant.deleted_at) {
+                  return true;
+                }
+                return false;
+              });
+            }
+
             if (product.data.price === 0 || isNaN(product.data.price)) {
               deferred.reject(product);
               return;
